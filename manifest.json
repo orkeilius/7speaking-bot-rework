@@ -7,7 +7,16 @@
   "icons": {
     "48": "images/extension_48.png"
   },
-  "chrome_url_overrides": {
-    "newtab": "newtab/index.html"
+  "action": {
+    "default_popup": "src/settings/index.html"
+  },
+  "options_ui": {
+    "page": "src/settings/index.html"
+  },
+  "permissions": ["storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@7speaking-bot-rework"
+    }
   }
 }
