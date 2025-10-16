@@ -5,6 +5,7 @@ export default function Settings() {
     const [errorProbability, setErrorProbability] = React.useState(0.2);
     const [useRealtime, setUseRealtime] = React.useState(true);
     const [fixTime, setFixTime] = React.useState(360);
+    const [active, setActive] = React.useState(false);
 
     const updateErrorProbability = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorProbability(Number.parseFloat(e.target.value));
@@ -20,11 +21,16 @@ export default function Settings() {
         setFixTime(Number.parseInt(e.target.value, 10));
         browser.storage.sync.set({fixTime: Number.parseInt(e.target.value, 10)});
     }
+    const updateActive = () => {
+        browser.storage.sync.set({active: !active});
+        setActive(!active);
+
+    }
 
     useEffect(() => {
         async function fetchSettings() {
             try {
-                const result = await browser.storage.sync.get(['errorProbability', 'useRealtime', 'fixTime']);
+                const result = await browser.storage.sync.get(['errorProbability', 'useRealtime', 'fixTime', 'active']);
                 if (typeof result.errorProbability === 'number' && !Number.isNaN(result.errorProbability)) {
                     setErrorProbability(result.errorProbability);
                 }
@@ -33,6 +39,9 @@ export default function Settings() {
                 }
                 if (typeof result.fixTime === 'number' && !Number.isNaN(result.fixTime)) {
                     setFixTime(result.fixTime);
+                }
+                if (typeof result.active === 'boolean') {
+                    setActive(result.active);
                 }
             } catch (e) {
                 // Optionnel : log l'erreur ou ignorer
@@ -51,6 +60,7 @@ export default function Settings() {
                     7speaking bot rework - settings
                 </h1>
             </header>
+            <button onClick={updateActive}>{active ? "stop" : "start"}</button>
             <div className="settings-card">
                 <div className="setting-row">
                     <label>Error probability:
