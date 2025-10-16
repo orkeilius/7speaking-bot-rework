@@ -7,6 +7,14 @@
   "icons": {
     "48": "images/extension_48.png"
   },
+
+  "content_scripts": [
+    {
+      "matches": ["https://user.7speaking.com/*"],
+      "js": ["./src/bot/main.ts"]
+    }
+  ],
+
   "action": {
     "default_popup": "src/settings/index.html"
   },

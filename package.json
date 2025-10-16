@@ -21,7 +21,7 @@
     "typescript": "5.3.3"
   },
   "scripts": {
-    "dev": "npx extension@latest dev --browser=firefox --polyfill",
+    "dev": "npx extension@latest dev --browser=firefox --polyfill --profile /var/home/orkeilius/.mozilla/firefox/mxl6o1eo.dev-edition-default",
     "start": "extension start",
     "build": "extension@latest build"
   }
