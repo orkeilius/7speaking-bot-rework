@@ -1,15 +1,12 @@
 import {BeginnerQuiz} from "../quizHandler/BeginnerQuiz";
-
-const NextButtonSelector = 'button.next__btn'
-const ValidateButtonSelector = 'button.validate__btn'
-const BackButtonSelector = 'button.back__btn'
+import {Selector} from "../utils/SelectorConstant";
 
 export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
 
     readonly routeRegex = /^workshop.*beginners-workshop/;
 
     async handler() {
-        const nextButton = document.querySelector(NextButtonSelector);
+        const nextButton = document.querySelector(Selector.NextButtonSelector);
         console.log("next : ", nextButton)
         if (nextButton != null) {
             console.log("Next button found, clicking...")
@@ -17,7 +14,7 @@ export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
             return
         }
 
-        const validateButton = document.querySelector(ValidateButtonSelector);
+        const validateButton = document.querySelector(Selector.ValidateButtonSelector);
         if(validateButton != null) {
             if (validateButton?.hasAttribute("disabled") != null) {
                 new BeginnerQuiz().handle()
@@ -29,7 +26,7 @@ export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
 
         }
 
-        const backButton = document.querySelector(BackButtonSelector);
+        const backButton = document.querySelector(Selector.BackButtonSelector);
         if(backButton != null) {
             console.log("Back button found, clicking...")
             backButton.click()

@@ -1,0 +1,9 @@
+
+export class Selector {
+
+    static readonly NextButtonSelector = 'button.next__btn'
+    static readonly ValidateButtonSelector = 'button.validate__btn'
+    static readonly BackButtonSelector = 'button.back__btn'
+    static readonly PopUpDialogSelector = 'div.selectViewModal__Card'
+    static readonly VocabularyQuizSelector = "div.vocabulary__girdMode_container > button.cardMode__goToQuiz"
+}

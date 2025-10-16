@@ -1,8 +1,9 @@
 import {HomeHandler} from "./routesHandlers/HomeHandler";
 import {BegginerWorkshopHandler} from "./routesHandlers/BegginerWorkshopHandler";
 import browser from "webextension-polyfill";
+import {LearningHandler} from "./routesHandlers/LearningHandler";
 
-const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler()];
+const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler(),new LearningHandler()];
 
 class Bot {
 
