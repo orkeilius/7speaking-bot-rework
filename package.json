@@ -1,28 +1,37 @@
 {
-  "private": true,
-  "name": "react-new-tab-example",
-  "description": "A modern browser extension new tab page example built with Extension.js and React. Demonstrates how to create interactive new tab pages using React components with clean, maintainable code.",
+  "name": "7speaking-bot-rework2",
+  "displayName": "7speaking bot rework2",
   "version": "0.0.1",
-  "license": "MIT",
-  "type": "module",
-  "author": {
-    "name": "Cezar Augusto",
-    "email": "boss@cezaraugusto.net",
-    "url": "https://cezaraugusto.com"
+  "description": "A basic Plasmo extension.",
+  "author": "Plasmo Corp. <foss@plasmo.com>",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
   },
   "dependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "extension": "latest"
+    "@plasmohq/storage": "^1.15.0",
+    "plasmo": "0.90.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
+    "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@types/chrome": "0.0.258",
+    "@types/node": "20.11.5",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "prettier": "3.2.4",
     "typescript": "5.3.3"
   },
-  "scripts": {
-    "dev": "npx extension@latest dev --browser=firefox --polyfill --profile /var/home/orkeilius/.mozilla/firefox/mxl6o1eo.dev-edition-default",
-    "start": "extension start",
-    "build": "extension@latest build"
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "your-id@example.com"
+      }
+    }
   }
 }

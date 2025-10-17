@@ -1,4 +1,6 @@
-import browser from "webextension-polyfill";
+import { Storage } from "@plasmohq/storage"
+
+const storage = new Storage()
 
 export class TimeUtils {
 
@@ -11,7 +13,7 @@ export class TimeUtils {
     timerEnd = 0
 
     async updateStorageValue() {
-        const result = await browser.storage.sync.get(['fixTime', 'useRealtime', 'timerUrl', 'timerEnd']);
+        const result = await storage.getMany(['fixTime', 'useRealtime', 'timerUrl', 'timerEnd']);
         if (typeof result.fixTime === 'number' && !Number.isNaN(result.fixTime)) {
             this.fixTime = result.fixTime;
         }
@@ -37,7 +39,7 @@ export class TimeUtils {
             console.log("remaining time ", (this.timerEnd - Date.now()) / 1000)
             return false
         }
-        browser.storage.sync.set({timerUrl:""})
+        await storage.set("timerUrl","")
         return true
     }
 
@@ -49,7 +51,7 @@ export class TimeUtils {
         console.log("time",time)
         const newTime = Date.now() + time
 
-        await browser.storage.sync.set({timerUrl:document.location.href,timerEnd:newTime})
+        await storage.setMany({timerUrl:document.location.href,timerEnd:newTime})
         console.log("timer set to : ",new Date(newTime).toLocaleTimeString())
     }
 

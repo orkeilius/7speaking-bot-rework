@@ -1,7 +1,10 @@
-import React, {useEffect} from 'react'
-import browser from "webextension-polyfill";
+import "./styles.css"
+import { Storage } from "@plasmohq/storage"
+import React, {useEffect} from "react";
 
-export default function Settings() {
+const storage = new Storage()
+
+export default function IndexPopup() {
     const [errorProbability, setErrorProbability] = React.useState(0.2);
     const [useRealtime, setUseRealtime] = React.useState(true);
     const [fixTime, setFixTime] = React.useState(360);
@@ -9,20 +12,20 @@ export default function Settings() {
 
     const updateErrorProbability = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorProbability(Number.parseFloat(e.target.value));
-        browser.storage.sync.set({errorProbability: Number.parseFloat(e.target.value)});
+        storage.set("errorProbability", Number.parseFloat(e.target.value));
 
     }
 
     const updateUseRealtime = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUseRealtime(e.target.checked);
-        browser.storage.sync.set({useRealtime: e.target.checked});
+        storage.set("useRealtime", e.target.checked);
     }
     const updateFixedTime = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFixTime(Number.parseInt(e.target.value, 10));
-        browser.storage.sync.set({fixTime: Number.parseInt(e.target.value, 10)});
+        storage.set("fixTime", Number.parseInt(e.target.value, 10));
     }
     const updateActive = () => {
-        browser.storage.sync.set({active: !active});
+        storage.set("active", !active)
         setActive(!active);
 
     }
@@ -30,7 +33,7 @@ export default function Settings() {
     useEffect(() => {
         async function fetchSettings() {
             try {
-                const result = await browser.storage.sync.get(['errorProbability', 'useRealtime', 'fixTime', 'active']);
+                const result = await storage.getMany(['errorProbability', 'useRealtime', 'fixTime', 'active']);
                 if (typeof result.errorProbability === 'number' && !Number.isNaN(result.errorProbability)) {
                     setErrorProbability(result.errorProbability);
                 }
