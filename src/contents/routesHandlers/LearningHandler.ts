@@ -5,7 +5,7 @@ import {TimeUtils} from "../utils/TImeUtils";
 
 export class LearningHandler implements RouteHandlerInterfaces {
 
-    readonly routeRegex = /^workshop.*vocabulary/;
+    readonly routeRegex = /^(?:workshop.*(?:vocabulary|linguistic-content)|document).*$/;
 
     async handler() {
 
@@ -21,10 +21,14 @@ export class LearningHandler implements RouteHandlerInterfaces {
         }
 
         const QuizButton = document.querySelector(Selector.VocabularyQuizSelector)
-        console.log(document.querySelectorAll(Selector.VocabularyQuizSelector))
         if (QuizButton != null) {
             console.log("Quiz button found, clicking...")
             QuizButton?.click()
+        }
+        const QuizTab = document.querySelector(Selector.QuizTabSelector)
+        if (QuizTab != null) {
+            console.log("Quiz tab found, clicking...")
+            QuizTab?.click()
         }
 
     }

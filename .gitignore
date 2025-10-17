@@ -8,6 +8,8 @@ coverage
 
 # production
 dist
+build
+.plasmo
 
 # misc
 .DS_Store

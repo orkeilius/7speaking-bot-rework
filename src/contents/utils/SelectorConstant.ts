@@ -6,4 +6,6 @@ export class Selector {
     static readonly BackButtonSelector = 'button.back__btn'
     static readonly PopUpDialogSelector = 'div.selectViewModal__Card'
     static readonly VocabularyQuizSelector = "div.vocabulary__girdMode_container > button.cardMode__goToQuiz"
+    static readonly QuizTabSelector = "div.appBarTabs__testTab"
+    static readonly QuizValidateSelector = ".question__btns__container button[type=submit]"
 }
