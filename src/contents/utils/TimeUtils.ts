@@ -1,11 +1,12 @@
 import { Storage } from "@plasmohq/storage"
+import {logMessage} from "~contents/utils/Logging";
 
-const storage = new Storage()
+const storage = new Storage({area: "local"})
 
 export class TimeUtils {
 
     // 20 minutes
-    static readonly defaultTiming = 60 * 1000 * 0.2;
+    static readonly defaultTiming = 60 * 1000 * 0.5;
 
     useRealtime = false
     fixTime = 0
@@ -44,7 +45,7 @@ export class TimeUtils {
             return false
         }
         if(this.timerEnd > Date.now()){
-            console.log("remaining time ", (this.timerEnd - Date.now()) / 1000)
+            logMessage(`⏱️ waiting (time left ${Math.floor((this.timerEnd - Date.now()) / 60000)}mins ${Math.floor(((this.timerEnd - Date.now()) % 60000) / 1000)}s)`)
             return false
         }
         await storage.set("timerUrl","")
@@ -56,11 +57,11 @@ export class TimeUtils {
         if(this.useRealtime){
             time = await this.findRealTime()
         }
-        console.log("time",time)
         const newTime = Date.now() + time
 
         await storage.setMany({timerUrl:document.location.href,timerEnd:newTime})
-        console.log("timer set to : ",new Date(newTime).toLocaleTimeString())
+        logMessage("⏱️ setting timer for "+ new Date(newTime).toLocaleTimeString())
+
     }
 
     async findRealTime(){

@@ -5,7 +5,6 @@ import {Selector} from "~contents/utils/SelectorConstant";
 
 export class TextInput implements QuestionInterface {
      isDetected(): boolean {
-        console.log("salut");
         return document.querySelector<HTMLInputElement>(".question__form input[type=text]") !== null;
     }
 

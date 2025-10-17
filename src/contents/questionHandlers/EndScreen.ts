@@ -1,4 +1,5 @@
 import type {QuestionInterface} from "~contents/questionHandlers/QuestionInterface";
+import {logMessage} from "~contents/utils/Logging";
 
 export class EndScreen implements QuestionInterface {
     isDetected(): boolean {
@@ -6,7 +7,7 @@ export class EndScreen implements QuestionInterface {
     }
 
     async handler(): Promise<void> {
-        console.log("EndScreen handler");
+        logMessage("🏁 Quiz ended, returning to home...");
         document.querySelector<HTMLButtonElement>(".result-container button.back")?.click()
     }
 }

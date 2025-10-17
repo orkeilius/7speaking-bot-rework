@@ -1,6 +1,7 @@
 import {getReactAnswerDragDrop, executeDragAndDrop} from "~contents/utils/ReactUtils";
 import type {QuestionInterface} from "~contents/questionHandlers/QuestionInterface";
 import {Selector} from "~contents/utils/SelectorConstant";
+import {logMessage} from "~contents/utils/Logging";
 
 export class DragAndDrop implements QuestionInterface {
     isDetected(): boolean {
@@ -8,6 +9,7 @@ export class DragAndDrop implements QuestionInterface {
     }
 
     async handler(): Promise<void> {
+        logMessage("🖌️ Drag and Drop");
         const answer = await getReactAnswerDragDrop();
 
         for (const elem of answer.answers) {

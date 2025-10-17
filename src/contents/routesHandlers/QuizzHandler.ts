@@ -12,7 +12,12 @@ export class QuizzHandler implements RouteHandlerInterfaces {
     readonly routeRegex = /^quiz/;
 
     async handler() {
-        await QuizzHandler.listQuestion.find(elem => elem.isDetected())?.handler()
+        const handler = QuizzHandler.listQuestion.find(elem => elem.isDetected())
+        if(handler == undefined){
+            console.log("❓ Question type not found")
+            return
+        }
+        await handler.handler()
     }
 
 }

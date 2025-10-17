@@ -1,13 +1,16 @@
+import {logMessage} from "~contents/utils/Logging";
+
 export class HomeHandler implements RouteHandlerInterfaces{
 
     readonly routeRegex = /^home/;
 
     async handler() {
-        const page = document.querySelector(".scrollableList .scrollableList__content .MuiButtonBase-root") as HTMLElement
+        const page = document.querySelector(".scrollableList .scrollableList__content .MuiButtonBase-root")
         if(page == null){
-            console.warn("elem not found")
+            logMessage("🤔 Lesson not found")
             return
         }
+        logMessage("🧠 Starting lesson...")
         page.click()
     }
 }

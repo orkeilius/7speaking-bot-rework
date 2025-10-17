@@ -1,8 +1,8 @@
 import type {PlasmoCSConfig, PlasmoGetStyle} from "plasmo";
 import styleText from "data-text:./style.css"
-import { FaRegCirclePlay, FaRegCirclePause  } from "react-icons/fa6";
+import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
 import {useEffect, useState} from "react";
-import { Storage } from "@plasmohq/storage"
+import {Storage} from "@plasmohq/storage"
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
@@ -15,22 +15,22 @@ export const getStyle: PlasmoGetStyle = () => {
     return style
 }
 
-const storage = new Storage();
+const storage = new Storage({area: "local"});
 
-const overlay = () => {
+const Overlay = () => {
 
-    const [active , setActive] = useState<boolean>(false);
-    const [text , setText] = useState<string>("⏱️ waiting...");
+    const [active, setActive] = useState<boolean>(false);
+    const [text, setText] = useState<string>("⏱️ waiting...");
 
     const updateValue = async () => {
-        const result = await storage.getMany(['active', 'text']);
+        const result = await storage.getMany(['active', 'log']);
         if (typeof result?.active === "boolean") {
             setActive(result.active);
         } else {
             storage.setItem("active", false);
         }
-        if(typeof result?.text == "string") {
-            setText(result.text);
+        if (typeof result?.log == "string") {
+            setText(result.log);
         } else {
             storage.setItem("text", "⏱️ waiting...");
         }
@@ -39,7 +39,9 @@ const overlay = () => {
     useEffect(() => {
         updateValue();
         const i = setInterval(updateValue, 100);
-        return () => {clearInterval(i)};
+        return () => {
+            clearInterval(i)
+        };
     });
 
     const toggleActive = async () => {
@@ -47,19 +49,14 @@ const overlay = () => {
         setActive(!active);
     }
 
-    return(
+    return (
         <div className="overlay">
-            {active ? (
-                <>
-                    <FaRegCirclePause onClick={toggleActive}/>
-                    <span className="overlay-text">{text}</span>
-                </>
-            ):(
-                <>
-                    <FaRegCirclePause onClick={toggleActive} />
-                    <span className="overlay-text">🧠 ready to learn ! </span>
-                </>
-            )}
+            {active ?
+                <FaRegCirclePause className="icon pause" onClick={toggleActive}/>
+             :
+                <FaRegCirclePlay className="icon play" onClick={toggleActive}/>
+            }
+            <span className="overlay-text">{text}</span>
 
 
         </div>
@@ -67,4 +64,4 @@ const overlay = () => {
 
 };
 
-export default overlay
+export default Overlay

@@ -2,7 +2,7 @@ import "./styles.css"
 import { Storage } from "@plasmohq/storage"
 import React, {useEffect} from "react";
 
-const storage = new Storage()
+const storage = new Storage({area: "local"})
 
 export default function IndexPopup() {
     const [errorProbability, setErrorProbability] = React.useState(0.2);

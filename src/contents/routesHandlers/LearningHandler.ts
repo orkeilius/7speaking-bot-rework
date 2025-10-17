@@ -1,34 +1,35 @@
 import {Selector} from "../utils/SelectorConstant";
-import {TimeUtils} from "../utils/TImeUtils";
+import {TimeUtils} from "../utils/TimeUtils";
+import {logMessage} from "~contents/utils/Logging";
 
 
 
 export class LearningHandler implements RouteHandlerInterfaces {
 
-    readonly routeRegex = /^(?:workshop.*(?:vocabulary|linguistic-content)|document).*$/;
+    readonly routeRegex = /^(?:workshop.*(?:vocabulary|linguistic-content)|document|professional-survival-kit).*$/;
 
     async handler() {
 
         const PopupDialog = document.querySelector(Selector.PopUpDialogSelector)
         if (PopupDialog != null) {
-            console.log("Pop up found, clicking...")
+            logMessage("🛑 Pop up found,closing...")
             PopupDialog.querySelector(Selector.ValidateButtonSelector)?.click()
         }
 
         const isTimerEnded = await new TimeUtils().isWaitingEnded()
         if(!isTimerEnded){
+
             return
         }
-        console.log("LearningHandler activated")
 
         const QuizButton = document.querySelector(Selector.VocabularyQuizSelector)
         if (QuizButton != null) {
-            console.log("Quiz button found, clicking...")
+            logMessage("☝️🤓 quiz time!")
             QuizButton?.click()
         }
         const QuizTab = document.querySelector(Selector.QuizTabSelector)
         if (QuizTab != null) {
-            console.log("Quiz tab found, clicking...")
+            logMessage("☝️🤓 quiz time!")
             QuizTab?.click()
         }
 
