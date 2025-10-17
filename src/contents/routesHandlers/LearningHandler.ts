@@ -19,6 +19,7 @@ export class LearningHandler implements RouteHandlerInterfaces {
         if(!isTimerEnded){
             return
         }
+        console.log("LearningHandler activated")
 
         const QuizButton = document.querySelector(Selector.VocabularyQuizSelector)
         if (QuizButton != null) {

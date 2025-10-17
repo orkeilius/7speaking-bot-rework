@@ -5,7 +5,7 @@ const storage = new Storage()
 export class TimeUtils {
 
     // 20 minutes
-    static readonly defaultTiming = 60 * 1000 * 1;
+    static readonly defaultTiming = 60 * 1000 * 0.2;
 
     useRealtime = false
     fixTime = 0
@@ -16,15 +16,23 @@ export class TimeUtils {
         const result = await storage.getMany(['fixTime', 'useRealtime', 'timerUrl', 'timerEnd']);
         if (typeof result.fixTime === 'number' && !Number.isNaN(result.fixTime)) {
             this.fixTime = result.fixTime;
+        }else {
+           await storage.set("fixTime",0)
         }
         if (typeof result.useRealtime === 'boolean') {
             this.useRealtime = result.useRealtime;
+        }else {
+            await storage.set("useRealtime",true)
         }
         if (typeof result.timerUrl === 'string') {
             this.timerUrl = result.timerUrl
+        } else {
+            await storage.set("timerUrl","")
         }
         if (typeof result.timerEnd === 'number' && !Number.isNaN(result.timerEnd)) {
             this.timerEnd = result.timerEnd;
+        } else {
+            await storage.set("timerEnd",0)
         }
     }
 
@@ -32,7 +40,7 @@ export class TimeUtils {
     async isWaitingEnded() {
         await this.updateStorageValue()
         if(document.location.href !== this.timerUrl){
-            this.createTimer()
+            await this.createTimer()
             return false
         }
         if(this.timerEnd > Date.now()){
