@@ -10,12 +10,21 @@ export const config: PlasmoCSConfig = {
     all_frames: true
 }
 
-const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler(),new LearningHandler()];
 const storage = new Storage()
+const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler(),new LearningHandler(),new QuizzHandler()];
 
 class Bot {
 
     async loop() {
+        try {
+            await this.main()
+        } catch (e){
+            console.error("Error in bot loop",e)
+        }
+
+        setTimeout(() => this.loop(), 1000);
+    }
+    async main() {
         const result = await storage.getMany(['active']);
         if (!result.active) {
             console.log("Bot inactive")
@@ -24,11 +33,12 @@ class Bot {
 
         const url = globalThis.location.href.replace("https://user.7speaking.com/", "");
         routesHandler.find(handler => handler.routeRegex.test(url))?.handler()
-        console.log(routesHandler[1].routeRegex.test(url))
+        console.log(routesHandler[3].routeRegex.test(url))
     }
 
 }
 
 console.log("Bot started")
 const bot = new Bot()
-setInterval(bot.loop, 1000)
+
+bot.loop()

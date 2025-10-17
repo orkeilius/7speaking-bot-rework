@@ -1,50 +1,33 @@
-[powered-image]: https://img.shields.io/badge/Powered%20by-Extension.js-0971fe
-[powered-url]: https://extension.js.org
+This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
-[![Powered by Extension.js][powered-image]]
+## Getting Started
 
-# new/react
-
-> A modern browser extension new tab page example built with Extension.js and React. Demonstrates how to create interactive new tab pages using React components with clean, maintainable code.
-
-What this example does in the scope of a browser extension. The description should
-describe for an audience of developers looking to use the example. Avoid jargon and
-use simple language.
-
-## Installation
+First, run the development server:
 
 ```bash
-npx extension@latest create <project-name> --template new-react
-cd <project-name>
-npm install
+pnpm dev
+# or
+npm run dev
 ```
 
-## Commands
+Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
 
-### dev
+You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
 
-Run the extension in development mode.
+For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+
+## Making production build
+
+Run the following:
 
 ```bash
-npx extension@latest dev
+pnpm build
+# or
+npm run build
 ```
 
-### build
+This should create a production bundle for your extension, ready to be zipped and published to the stores.
 
-Build the extension for production.
+## Submit to the webstores
 
-```bash
-npx extension@latest build
-```
-
-### Preview
-
-Preview the extension in the browser.
-
-```bash
-npx extension@latest preview
-```
-
-## Learn more
-
-Learn more about this and other examples at @https://extension.js.org/
+The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
