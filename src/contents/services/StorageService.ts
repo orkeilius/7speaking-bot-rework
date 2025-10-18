@@ -66,6 +66,13 @@ class StorageService {
     async setErrorProbability(number: number) {
         await this.storage.set("errorProbability", number);
     }
+
+    async getShowOverlay() {
+        return await this.get<boolean>("showOverlay", true);
+    }
+    async setShowOverlay(value: boolean) {
+        await this.storage.set("showOverlay", value);
+    }
 }
 
 export const storageService = new StorageService();
