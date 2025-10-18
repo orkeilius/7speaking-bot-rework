@@ -1,5 +1,5 @@
 import {mainWorldHostService} from "~contents/services/MainWorldHostService";
-import {realistInput} from "~contents/utils/textInput";
+import {realistInput} from "~contents/utils/InputUtils";
 import type {QuestionInterface} from "~contents/question/QuestionInterface";
 import {Selector} from "~contents/utils/SelectorConstant";
 
