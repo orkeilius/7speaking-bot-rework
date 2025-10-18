@@ -4,7 +4,7 @@ import {logMessage} from "~contents/utils/Logging";
 
 
 
-export class LearningHandler implements RouteHandlerInterfaces {
+export class LearningHandler implements RouteHandlerInterface {
 
     readonly routeRegex = /^(?:workshop.*(?:vocabulary|linguistic-content)|document|professional-survival-kit).*$/;
 

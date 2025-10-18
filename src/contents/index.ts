@@ -1,5 +1,5 @@
 import {HomeHandler} from "~contents/routes/HomeHandler";
-import {BegginerWorkshopHandler} from "~contents/routes/BegginerWorkshopHandler";
+import {BeginnerWorkshopHandler} from "~contents/routes/BeginnerWorkshopHandler";
 import {LearningHandler} from "~contents/routes/LearningHandler";
 import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
@@ -11,7 +11,7 @@ export const config: PlasmoCSConfig = {
     all_frames: true
 }
 
-const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler(),new LearningHandler(),new QuizzHandler()];
+const routesHandler: RouteHandlerInterface[] = [new HomeHandler(), new BeginnerWorkshopHandler(),new LearningHandler(),new QuizzHandler()];
 
 class Bot {
 

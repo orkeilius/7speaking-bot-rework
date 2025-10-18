@@ -1,6 +1,6 @@
 import {logMessage} from "~contents/utils/Logging";
 
-export class HomeHandler implements RouteHandlerInterfaces{
+export class HomeHandler implements RouteHandlerInterface{
 
     readonly routeRegex = /^home/;
 

@@ -1,7 +1,7 @@
 import {Selector} from "../utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
 
-export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
+export class BeginnerWorkshopHandler implements RouteHandlerInterface {
 
     readonly routeRegex = /^workshop.*beginners-workshop/;
 
@@ -16,7 +16,7 @@ export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
 
         const validateButton = document.querySelector<HTMLElement>(Selector.ValidateButtonSelector);
         if(validateButton != null) {
-            if (validateButton?.hasAttribute("disabled") != null) {
+            if (validateButton.hasAttribute("disabled")) {
                 this.fillQuiz()
             }
             logMessage("✅ Validate button found, clicking...")

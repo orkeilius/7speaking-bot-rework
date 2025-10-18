@@ -3,7 +3,7 @@ import type {QuestionInterface} from "~contents/question/QuestionInterface";
 import {Selector} from "~contents/utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
 
-export class MultipleResponce implements QuestionInterface {
+export class MultipleResponse implements QuestionInterface {
      isDetected(): boolean {
         return document.querySelector<HTMLInputElement>(".answer-container > button") !== null;
     }
