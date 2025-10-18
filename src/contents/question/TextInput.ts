@@ -1,6 +1,6 @@
-import {getReactAnswer} from "~contents/utils/ReactUtils";
+import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {realistInput} from "~contents/utils/textInput";
-import type {QuestionInterface} from "~contents/questionHandlers/QuestionInterface";
+import type {QuestionInterface} from "~contents/question/QuestionInterface";
 import {Selector} from "~contents/utils/SelectorConstant";
 
 export class TextInput implements QuestionInterface {
@@ -9,7 +9,7 @@ export class TextInput implements QuestionInterface {
     }
 
     async handler(): Promise<void> {
-        const answer = await getReactAnswer();
+        const answer = await mainWorldHostService.getReactAnswer();
         console.log("answer:", answer);
         const input = document.querySelector<HTMLInputElement>(".question__form input[type=text]");
         await realistInput(input, answer);

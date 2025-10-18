@@ -1,5 +1,5 @@
-import {getReactAnswer} from "~contents/utils/ReactUtils";
-import type {QuestionInterface} from "~contents/questionHandlers/QuestionInterface";
+import {mainWorldHostService} from "~contents/services/MainWorldHostService";
+import type {QuestionInterface} from "~contents/question/QuestionInterface";
 import {Selector} from "~contents/utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
 
@@ -9,7 +9,7 @@ export class MultipleResponce implements QuestionInterface {
     }
 
     async handler(): Promise<void> {
-        const answer = await getReactAnswer();
+        const answer = await mainWorldHostService.getReactAnswer();
         logMessage("📝 Multiple Responce");
 
         const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".answer-container > button"));

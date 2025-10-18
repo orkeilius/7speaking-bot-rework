@@ -1,4 +1,4 @@
-import type {QuestionInterface} from "~contents/questionHandlers/QuestionInterface";
+import type {QuestionInterface} from "~contents/question/QuestionInterface";
 import {logMessage} from "~contents/utils/Logging";
 
 export class EndScreen implements QuestionInterface {

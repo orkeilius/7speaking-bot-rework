@@ -1,4 +1,3 @@
-import {BeginnerQuiz} from "../quizHandler/BeginnerQuiz";
 import {Selector} from "../utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
 
@@ -18,7 +17,7 @@ export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
         const validateButton = document.querySelector<HTMLElement>(Selector.ValidateButtonSelector);
         if(validateButton != null) {
             if (validateButton?.hasAttribute("disabled") != null) {
-                new BeginnerQuiz().handle()
+                this.fillQuiz()
             }
             logMessage("✅ Validate button found, clicking...")
             validateButton.click()
@@ -33,6 +32,24 @@ export class BegginerWorkshopHandler implements RouteHandlerInterfaces {
             backButton.click()
         }
 
+    }
+
+    fillQuiz(){
+        console.log("Handling beginner quiz...")
+        const quiz = document.querySelector(".beginners_topic__content > .MuiCardContent-root")
+        if(quiz == null){
+            console.warn("Quiz not found")
+            return
+        }
+
+        let question = quiz.querySelectorAll(".beginners_lesson__element7Question")
+        console.log(question)
+        question.forEach(this.clickAny)
+    }
+
+    clickAny(e: Element){
+        // Responce doesn't count on this type of test
+        e.querySelector('input')?.click()
     }
 
 }

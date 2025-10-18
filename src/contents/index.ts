@@ -1,7 +1,7 @@
-import {HomeHandler} from "./routesHandlers/HomeHandler";
-import {BegginerWorkshopHandler} from "./routesHandlers/BegginerWorkshopHandler";
-import {LearningHandler} from "./routesHandlers/LearningHandler";
-import {QuizzHandler} from "./routesHandlers/QuizzHandler";
+import {HomeHandler} from "~contents/routes/HomeHandler";
+import {BegginerWorkshopHandler} from "~contents/routes/BegginerWorkshopHandler";
+import {LearningHandler} from "~contents/routes/LearningHandler";
+import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
 import {storageService} from "~contents/services/StorageService";
