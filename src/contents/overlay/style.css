@@ -1,22 +1,12 @@
 
-#plasmo-shadow-container{
-    bottom: 0;
-    position: fixed;
-}
+
 
 .overlay{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
     border-radius: 2em;
     margin: 0.5em;
     padding: 0.25em 0.5em;
-    background: white;
-    box-shadow: #333333 0px 0px 10px;
     font-family: Calibri, serif;
     font-size: 1.5em;
     line-height: 1.6em;

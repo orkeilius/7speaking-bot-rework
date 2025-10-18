@@ -1,5 +1,5 @@
 import type {PlasmoCSConfig, PlasmoGetStyle} from "plasmo";
-import styleText from "data-text:./style.css"
+import styleText from "data-text:~style.css";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {storageService} from "~contents/services/StorageService";
@@ -46,11 +46,11 @@ const Overlay = () => {
     }
 
     return (
-        <div className="overlay">
+        <div className="fixed bottom-0 left-0 flex z-[9999] m-2 px-4 py-2 text-2xl border bg-bg-2 rounded-full p-2 items-center shadow shadow-primary">
             {active ?
-                <FaRegCirclePause className="icon pause" onClick={toggleActive}/>
+                <FaRegCirclePause className="text-secondary mr-1" onClick={toggleActive}/>
              :
-                <FaRegCirclePlay className="icon play" onClick={toggleActive}/>
+                <FaRegCirclePlay className="text-primary mr-1" onClick={toggleActive}/>
             }
             <span className="overlay-text">{text}</span>
 
