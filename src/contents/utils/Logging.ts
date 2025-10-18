@@ -1,8 +1,6 @@
-import { Storage } from "@plasmohq/storage"
-
-const storage = new Storage({area: "local"})
+import {storageService} from "~contents/services/StorageService";
 
 export async function logMessage(message: string) {
     console.log(`bot - ${message}`)
-    storage.set("log", message)
+    await storageService.setLog(message)
 }

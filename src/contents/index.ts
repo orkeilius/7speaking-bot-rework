@@ -3,15 +3,14 @@ import {BegginerWorkshopHandler} from "./routesHandlers/BegginerWorkshopHandler"
 import {LearningHandler} from "./routesHandlers/LearningHandler";
 import {QuizzHandler} from "./routesHandlers/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
-import { Storage } from "@plasmohq/storage"
 import {logMessage} from "~contents/utils/Logging";
+import {storageService} from "~contents/services/StorageService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
     all_frames: true
 }
 
-const storage = new Storage({area: "local"})
 const routesHandler: RouteHandlerInterfaces[] = [new HomeHandler(), new BegginerWorkshopHandler(),new LearningHandler(),new QuizzHandler()];
 
 class Bot {
@@ -20,13 +19,13 @@ class Bot {
         try {
             await this.main()
         } catch (e){
-            logMessage("🚨 error in bot")
+            await logMessage(`🚨 error in bot (${(e as Error).message})`)
         }
 
         setTimeout(() => this.loop(), 1000);
     }
     async main() {
-        const result = await storage.getMany(['active']);
+        const active = await storageService.getActive();
 
         const url = globalThis.location.href.replace("https://user.7speaking.com/", "");
         const route = routesHandler.find(handler => handler.routeRegex.test(url));
@@ -35,7 +34,7 @@ class Bot {
             logMessage("🟡 page unknown")
             return
         }
-        if (!result.active) {
+        if (!active) {
             logMessage("🧠 ready to learn !")
             return
         }

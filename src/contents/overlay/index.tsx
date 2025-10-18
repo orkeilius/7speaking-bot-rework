@@ -2,7 +2,7 @@ import type {PlasmoCSConfig, PlasmoGetStyle} from "plasmo";
 import styleText from "data-text:./style.css"
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
 import {useEffect, useState} from "react";
-import {Storage} from "@plasmohq/storage"
+import {storageService} from "~contents/services/StorageService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
@@ -15,7 +15,6 @@ export const getStyle: PlasmoGetStyle = () => {
     return style
 }
 
-const storage = new Storage({area: "local"});
 
 const Overlay = () => {
 
@@ -23,17 +22,8 @@ const Overlay = () => {
     const [text, setText] = useState<string>("⏱️ waiting...");
 
     const updateValue = async () => {
-        const result = await storage.getMany(['active', 'log']);
-        if (typeof result?.active === "boolean") {
-            setActive(result.active);
-        } else {
-            storage.setItem("active", false);
-        }
-        if (typeof result?.log == "string") {
-            setText(result.log);
-        } else {
-            storage.setItem("text", "⏱️ waiting...");
-        }
+        setText(await storageService.getLog())
+        setActive(await storageService.getActive())
     };
 
     useEffect(() => {
@@ -45,7 +35,7 @@ const Overlay = () => {
     });
 
     const toggleActive = async () => {
-        await storage.set("active", !active);
+        await storageService.setActive(!active);
         setActive(!active);
     }
 
