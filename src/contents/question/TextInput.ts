@@ -1,20 +1,18 @@
 import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {realistInput} from "~contents/utils/InputUtils";
-import type {QuestionInterface} from "~contents/question/QuestionInterface";
-import {Selector} from "~contents/utils/SelectorConstant";
+import {QuestionInterface} from "~contents/question/QuestionInterface";
 
-export class TextInput implements QuestionInterface {
-     isDetected(): boolean {
+export class TextInput extends QuestionInterface<string> {
+      isDetected(): boolean {
         return document.querySelector<HTMLInputElement>(".question__form input[type=text]") !== null;
     }
 
-    async handler(): Promise<void> {
-        const answer = await mainWorldHostService.getReactAnswer();
-        console.log("answer:", answer);
+    async getGoodAnswer(): Promise<string> {
+        return await mainWorldHostService.getReactAnswer();
+    }
+
+    async executeAnswer(answer: string): Promise<void> {
         const input = document.querySelector<HTMLInputElement>(".question__form input[type=text]");
         await realistInput(input, answer);
-
-        const btnContainer = document.querySelector(Selector.QuizValidateSelector);
-        btnContainer?.click();
     }
 }

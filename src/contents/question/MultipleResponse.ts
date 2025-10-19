@@ -1,21 +1,19 @@
 import {mainWorldHostService} from "~contents/services/MainWorldHostService";
-import type {QuestionInterface} from "~contents/question/QuestionInterface";
-import {Selector} from "~contents/utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
+import {QuestionInterface} from "~contents/question/QuestionInterface";
 
-export class MultipleResponse implements QuestionInterface {
-     isDetected(): boolean {
+export class MultipleResponse extends QuestionInterface<string> {
+    isDetected(): boolean {
         return document.querySelector<HTMLInputElement>(".answer-container > button") !== null;
     }
 
-    async handler(): Promise<void> {
-        const answer = await mainWorldHostService.getReactAnswer();
+    async getGoodAnswer(): Promise<string> {
         logMessage("📝 Multiple Responce");
+        return await mainWorldHostService.getReactAnswer();
+    }
 
+    async executeAnswer(answer: string): Promise<void> {
         const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".answer-container > button"));
         buttons.find(btn => btn.children.item(0).innerHTML.trim() === answer.trim())?.click();
-
-        const btnContainer = document.querySelector(Selector.QuizValidateSelector);
-        btnContainer?.click();
     }
 }

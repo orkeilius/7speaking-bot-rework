@@ -1,3 +1,4 @@
+import type DragAndDropRawAnswer from "~types/DragAndDropRawAnswer";
 
 class MainWorldHostService {
    private async callFunction(functionName: string, detail: any = {}): Promise<any> {
@@ -19,11 +20,11 @@ class MainWorldHostService {
         return this.callFunction('GET_ANSWER').then((detail: any) => detail ? detail.answer : "");
     }
 
-    async getReactAnswerDragDrop(): Promise<any> {
-        return this.callFunction('GET_ANSWER_DRAGDROP').then((detail: any) => detail ? detail.answer : "");
+    async getReactAnswerDragDrop(): Promise<DragAndDropRawAnswer> {
+        return this.callFunction('GET_ANSWER_DRAGDROP').then((detail: any) => detail ? detail.answer : null);
     }
 
-    async executeDragAndDrop(draggableId: string, droppableId: string): Promise<{ success: boolean; error?: string }> {
+    async executeDragAndDrop(draggableId: number, droppableId: number): Promise<{ success: boolean; error?: string }> {
         return this.callFunction('EXECUTE_DRAGDROP', { draggableId, droppableId }).then((detail: any) => detail || { success: false, error: 'Timeout' });
     }
 }
