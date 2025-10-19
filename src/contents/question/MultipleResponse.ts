@@ -1,5 +1,4 @@
 import {mainWorldHostService} from "~contents/services/MainWorldHostService";
-import {logMessage} from "~contents/utils/Logging";
 import {QuestionInterface} from "~contents/question/QuestionInterface";
 
 export class MultipleResponse extends QuestionInterface<string> {
@@ -7,8 +6,14 @@ export class MultipleResponse extends QuestionInterface<string> {
         return document.querySelector<HTMLInputElement>(".answer-container > button") !== null;
     }
 
+    protected getGoodText(): string {
+       return "📝 Clicking button"
+    }
+    protected getBadText(): string {
+            return "📝 Tapping on the screen"
+    }
+
     async getGoodAnswer(): Promise<string> {
-        logMessage("📝 Multiple Responce");
         return await mainWorldHostService.getReactAnswer();
     }
 

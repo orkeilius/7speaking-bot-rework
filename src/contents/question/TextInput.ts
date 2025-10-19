@@ -7,6 +7,13 @@ export class TextInput extends QuestionInterface<string> {
         return document.querySelector<HTMLInputElement>(".question__form input[type=text]") !== null;
     }
 
+    protected getGoodText(): string {
+       return "🖊️ Writting"
+    }
+    protected getBadText(): string {
+          return "🖊️ Scribbling"
+    }
+
     async getGoodAnswer(): Promise<string> {
         return await mainWorldHostService.getReactAnswer();
     }

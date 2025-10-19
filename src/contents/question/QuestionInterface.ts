@@ -9,6 +9,9 @@ export abstract class QuestionInterface<T> {
     protected abstract getBadAnswer(): Promise<T>;
     protected abstract executeAnswer(answer : T) : Promise<void>;
 
+    protected abstract getGoodText() : string;
+    protected abstract getBadText() : string;
+
     async executeSubmit(): Promise<void> {
         const btnContainer : HTMLElement = document.querySelector(Selector.QuizValidateSelector);
         btnContainer?.click();
@@ -20,6 +23,7 @@ export abstract class QuestionInterface<T> {
             const makeError = Math.random() < errorProbility;
 
             const answer: T = makeError ? await this.getBadAnswer() : await this.getGoodAnswer();
+            await logMessage(makeError ? this.getBadText() : this.getGoodText());
 
             await this.executeAnswer(answer);
             await this.executeSubmit()
