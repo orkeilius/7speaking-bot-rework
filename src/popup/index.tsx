@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import {storageService} from "~contents/services/StorageService";
 import Settings from "~popup/component/Settings";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
+import Stats from "~popup/component/Stats";
 
 export default function IndexPopup() {
 
@@ -35,6 +36,7 @@ export default function IndexPopup() {
                 {active ? <FaRegCirclePause className="w-full h-full"/> : <FaRegCirclePlay className="w-full h-full"/>}
             </button>
             <Settings/>
+            <Stats/>
         </div>
     )
 }

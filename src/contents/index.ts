@@ -38,6 +38,8 @@ class Bot {
             logMessage("🧠 ready to learn !")
             return
         }
+        await storageService.addStatTimeUse()
+        await storageService.setLastTimeRun()
         await route.handler()
     }
 

@@ -2,6 +2,7 @@ import { Storage } from "@plasmohq/storage"
 
 class StorageService {
     private readonly storage: Storage;
+    private readonly maxTimeUseDiffTooLong = 1000 * 60; // 10 minutes
 
     constructor() {
         this.storage = new Storage({ area: "local" });
@@ -73,6 +74,44 @@ class StorageService {
     async setShowOverlay(value: boolean) {
         await this.storage.set("showOverlay", value);
     }
+
+    async getLastTimeRun(){
+        return await this.get<number>("lastTimeRun", 0);
+    }
+    async setLastTimeRun(){
+        await this.storage.set("lastTimeRun", Date.now());
+    }
+
+    async getStatQuestionDone(){
+        return await this.get<number>("statQuestionDone", 0);
+    }
+
+    async addStatQuestionDone(){
+        let current = await this.getStatQuestionDone();
+        await this.storage.set("statQuestionDone", current + 1);
+    }
+
+    async getStatQuizDone(){
+        return await this.get<number>("statQuizDone", 0);
+    }
+    async addStatQuizDone(){
+        let current = await this.getStatQuizDone();
+        await this.storage.set("statQuizDone", current + 1);
+    }
+
+    async getStatTimeUse(){
+        return await this.get<number>("statTimeUse", 0);
+    }
+    async addStatTimeUse(){
+        let diff = Date.now() - await this.getLastTimeRun()
+        if(diff >= this.maxTimeUseDiffTooLong){
+            console.warn("skip")
+            return
+        }
+        let current = await this.getStatTimeUse();
+        await this.storage.set("statTimeUse", current + diff);
+    }
+
 }
 
 export const storageService = new StorageService();

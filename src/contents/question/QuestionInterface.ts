@@ -28,6 +28,7 @@ export abstract class QuestionInterface<T> {
             await this.executeAnswer(answer);
             await this.executeSubmit()
 
+            await storageService.addStatQuestionDone()
         } catch (error) {
             await logMessage(`⚠️ Error executing good answer, (${error})`);
         }

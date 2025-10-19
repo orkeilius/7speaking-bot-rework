@@ -1,4 +1,5 @@
 import {storageService} from "~contents/services/StorageService";
+import ElemRow from "~popup/component/ElemRow";
 import React, {useEffect} from "react";
 
 export default function Settings(){
@@ -39,31 +40,21 @@ export default function Settings(){
 
     return (
         <div className="m-2 bg-bg-2 rounded-xl p-2">
-                <SettingRow label={"Error Probability : "} labelAfter={"%"}>
+                <ElemRow label={"Error Probability : "} labelAfter={"%"}>
                         <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
-                </SettingRow>
-                <SettingRow label={"Show overlay : "}>
+                </ElemRow>
+                <ElemRow label={"Show overlay : "}>
                         <input type={"checkbox"} checked={showOverlay} onChange={updateShowOverlay}/>
-                </SettingRow>
-                <SettingRow label="use recommanded timer : ">
+                </ElemRow>
+                <ElemRow label="use recommanded timer : ">
                         <input type={"checkbox"} checked={useRealtime} onChange={updateUseRealtime}/>
-                </SettingRow>
+                </ElemRow>
                 {!useRealtime && (
-                    <SettingRow label="custom timer : " labelAfter={"min"}>
+                    <ElemRow label="custom timer : " labelAfter={"min"}>
                             <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={fixTime} onChange={updateFixedTime}/>
-                    </SettingRow>
+                    </ElemRow>
                 )}
         </div>
     )
 }
 
-const SettingRow: React.FC<{label: string,labelAfter?: string, children: React.ReactNode}> = ({label, labelAfter, children}) => {
-    return (
-        <div className="w-48 max-w-48 p-2 flex items-center">
-            <label>{label}</label>
-            <div className="grow ml-1"/>
-            {children}
-            {labelAfter && <label>{labelAfter}</label>}
-        </div>
-    )
-}

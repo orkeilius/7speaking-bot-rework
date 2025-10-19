@@ -1,4 +1,5 @@
 import {QuestionInterface} from "~contents/question/QuestionInterface";
+import {storageService} from "~contents/services/StorageService";
 
 export class EndScreen extends QuestionInterface<void> {
     isDetected(): boolean {
@@ -19,6 +20,7 @@ export class EndScreen extends QuestionInterface<void> {
     async executeAnswer(answer: void): Promise<void> {return}
     async executeSubmit(): Promise<void> {
         document.querySelector<HTMLButtonElement>(".result-container button.back")?.click()
+        await storageService.addStatQuizDone()
     }
 
 }
