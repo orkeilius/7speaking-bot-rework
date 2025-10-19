@@ -1,11 +1,12 @@
 import {Selector} from "~contents/utils/SelectorConstant";
 import {logMessage} from "~contents/utils/Logging";
+import {storageService} from "~contents/services/StorageService";
 
 export abstract class QuestionInterface<T> {
     protected abstract isDetected() :boolean;
 
     protected abstract getGoodAnswer(): Promise<T>;
-    // abstract async getBadAnswer(): Promise<T>;
+    protected abstract getBadAnswer(): Promise<T>;
     protected abstract executeAnswer(answer : T) : Promise<void>;
 
     async executeSubmit(): Promise<void> {
@@ -15,7 +16,11 @@ export abstract class QuestionInterface<T> {
 
     public handler = async (): Promise<void> => {
         try {
-            const answer = await this.getGoodAnswer();
+            const errorProbility =  await storageService.getErrorProbability()
+            const makeError = Math.random() < errorProbility;
+
+            const answer: T = makeError ? await this.getBadAnswer() : await this.getGoodAnswer();
+
             await this.executeAnswer(answer);
             await this.executeSubmit()
 

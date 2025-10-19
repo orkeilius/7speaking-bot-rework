@@ -61,7 +61,7 @@ class StorageService {
     }
 
     async getErrorProbability() {
-        return await this.get<number>("errorProbability", 0.2);
+        return await this.get<number>("errorProbability", Math.random() / 3 + 0.1);
     }
     async setErrorProbability(number: number) {
         await this.storage.set("errorProbability", number);

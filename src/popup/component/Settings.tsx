@@ -40,7 +40,7 @@ export default function Settings(){
     return (
         <div className="m-2 bg-bg-2 rounded-xl p-2">
                 <SettingRow label={"Error Probability : "} labelAfter={"%"}>
-                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-fit" value={errorProbability} onChange={updateErrorProbability} min="0" max="100"/>
+                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-fit" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
                 </SettingRow>
                 <SettingRow label={"Show overlay : "}>
                         <input type={"checkbox"} checked={showOverlay} onChange={updateShowOverlay}/>

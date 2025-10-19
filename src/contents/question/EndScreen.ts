@@ -7,6 +7,7 @@ export class EndScreen extends QuestionInterface<void> {
     }
 
     async getGoodAnswer(): Promise<void> {return}
+    async getBadAnswer(): Promise<void> {return}
 
     async executeAnswer(answer: void): Promise<void> {
         logMessage("🏁 Quiz ended, returning to home...");
