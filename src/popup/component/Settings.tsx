@@ -40,7 +40,7 @@ export default function Settings(){
     return (
         <div className="m-2 bg-bg-2 rounded-xl p-2">
                 <SettingRow label={"Error Probability : "} labelAfter={"%"}>
-                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-fit" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
+                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
                 </SettingRow>
                 <SettingRow label={"Show overlay : "}>
                         <input type={"checkbox"} checked={showOverlay} onChange={updateShowOverlay}/>
@@ -50,7 +50,7 @@ export default function Settings(){
                 </SettingRow>
                 {!useRealtime && (
                     <SettingRow label="custom timer : " labelAfter={"min"}>
-                            <input type={"number"} className="border-text-2 border p-0.5 rounded w-fit" value={fixTime} onChange={updateFixedTime}/>
+                            <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={fixTime} onChange={updateFixedTime}/>
                     </SettingRow>
                 )}
         </div>
@@ -59,7 +59,7 @@ export default function Settings(){
 
 const SettingRow: React.FC<{label: string,labelAfter?: string, children: React.ReactNode}> = ({label, labelAfter, children}) => {
     return (
-        <div className="w-full p-2 flex items-center">
+        <div className="w-48 max-w-48 p-2 flex items-center">
             <label>{label}</label>
             <div className="grow ml-1"/>
             {children}
