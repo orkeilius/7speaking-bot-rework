@@ -38,7 +38,7 @@ class Bot {
             logMessage("🧠 ready to learn !")
             return
         }
-        route.handler()
+        await route.handler()
     }
 
 }
