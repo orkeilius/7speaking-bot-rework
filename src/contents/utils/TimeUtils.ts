@@ -4,7 +4,7 @@ import {storageService} from "~contents/services/StorageService";
 export class TimeUtils {
 
     // 20 minutes
-    static readonly defaultTiming = 60 * 1000 * 0.5;
+    static readonly defaultTiming = 60 * 1000 * 20;
 
     async isWaitingEnded() {
         if(document.location.href !== await storageService.getTimerUrl()){
@@ -26,7 +26,7 @@ export class TimeUtils {
         if(await storageService.getUseRealtime()){
             time = await this.findRealTime()
         }
-        const newTime = Date.now() + time
+        const newTime = Date.now() + (time * (Math.random() + 0.5))
 
         await storageService.setTimerUrl(document.location.href)
         await storageService.setTimerEnd(newTime)
@@ -35,6 +35,19 @@ export class TimeUtils {
     }
 
     async findRealTime(){
+        const rawTime = document.querySelector('.durationCounter p.MuiTypography-body1')?.textContent
+        if(rawTime != null && /^\d+(?:sec|min|h)$/.test(rawTime)){
+            console.log(new RegExp(/\w*$/).exec(rawTime)[0])
+            const value = Number.parseInt(rawTime)
+            switch (new RegExp(/[a-z]*$/).exec(rawTime)[0]) {
+                case "sec" :
+                    return value * 1000
+                case "min" :
+                    return value * 60 * 1000
+                case "h" :
+                    return  value * 60 * 60 * 1000
+            }
+        }
         return TimeUtils.defaultTiming
     }
 
