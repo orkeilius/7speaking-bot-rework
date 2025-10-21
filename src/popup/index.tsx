@@ -1,5 +1,5 @@
 import "../style.css"
-import React, {useEffect} from "react";
+import React from "react";
 import {storageService} from "~contents/services/StorageService";
 import Settings from "~popup/component/Settings";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
@@ -16,18 +16,21 @@ export default function IndexPopup() {
 
     }
 
-    useEffect(() => {
-        async function fetchSettings() {
-            setActive(await storageService.getActive());
-        }
+    async function fetchSettings() {
+        setActive(await storageService.getActive());
+    }
+
+    setInterval(() => {
         fetchSettings();
-    }, []);
+    }, 1000);
+    fetchSettings()
 
 
     return (
         <div className="w-64 bg-bg-1 text-color-text font-sans flex flex-col items-center text-xs">
             <header className="bg-bg-2 p-4 m-0 rounded flex flex-col  items-center w-full">
-                <img alt="pause button" src="https://www.7speaking.com/wp-content/uploads/2024/07/Logo-7Speaking.webp" width="150px"/>
+                <img alt="pause button" src="https://www.7speaking.com/wp-content/uploads/2024/07/Logo-7Speaking.webp"
+                     width="150px"/>
                 <h1 className="text-xl text-center w-full">
                     Bot Rework
                 </h1>

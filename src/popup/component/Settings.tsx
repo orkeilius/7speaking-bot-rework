@@ -1,6 +1,6 @@
 import {storageService} from "~contents/services/StorageService";
 import ElemRow from "~popup/component/ElemRow";
-import React, {useEffect} from "react";
+import React from "react";
 
 export default function Settings(){
 
@@ -28,15 +28,17 @@ export default function Settings(){
         storageService.setFixedTime(Number.parseInt(e.target.value, 10) * 1000 * 60);
     }
 
-    useEffect(() => {
-        async function fetchSettings() {
-            setErrorProbability(await storageService.getErrorProbability() * 100);
-            setShowOverlay(await storageService.getShowOverlay());
-            setUseRealtime(await storageService.getUseRealtime())
-            setFixTime(await storageService.getFixedTime() / 1000 / 60);
-        }
+    async function fetchSettings() {
+        setErrorProbability(await storageService.getErrorProbability() * 100);
+        setShowOverlay(await storageService.getShowOverlay());
+        setUseRealtime(await storageService.getUseRealtime())
+        setFixTime(await storageService.getFixedTime() / 1000 / 60);
+    }
+
+    setInterval(() => {
         fetchSettings();
-    }, []);
+    },1000);
+    fetchSettings()
 
     return (
         <div className="m-2 bg-bg-2 rounded-xl p-2 w-4/5">
