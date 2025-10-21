@@ -48,7 +48,7 @@ export class BeginnerWorkshopHandler implements RouteHandlerInterface {
     }
 
     clickAny(e: Element){
-        // Responce doesn't count on this type of test
+        // Response doesn't count on this type of test
         e.querySelector('input')?.click()
     }
 
