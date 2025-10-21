@@ -39,9 +39,9 @@ export default function Settings(){
     }, []);
 
     return (
-        <div className="m-2 bg-bg-2 rounded-xl p-2">
+        <div className="m-2 bg-bg-2 rounded-xl p-2 w-4/5">
                 <ElemRow label={"Error Probability : "} labelAfter={"%"}>
-                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
+                        <input type={"number"} className="border-text-2 border p-0.5 rounded w-14" value={errorProbability} onChange={updateErrorProbability} min="0" max="100" step=".1"/>
                 </ElemRow>
                 <ElemRow label={"Show overlay : "}>
                         <input type={"checkbox"} checked={showOverlay} onChange={updateShowOverlay}/>
@@ -51,7 +51,7 @@ export default function Settings(){
                 </ElemRow>
                 {!useRealtime && (
                     <ElemRow label="custom timer : " labelAfter={"min"}>
-                            <input type={"number"} className="border-text-2 border p-0.5 rounded w-12" value={fixTime} onChange={updateFixedTime}/>
+                            <input type={"number"} className="border-text-2 border p-0.5 rounded w-14" value={fixTime} onChange={updateFixedTime}/>
                     </ElemRow>
                 )}
         </div>

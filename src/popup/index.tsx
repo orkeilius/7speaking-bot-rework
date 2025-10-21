@@ -25,7 +25,7 @@ export default function IndexPopup() {
 
 
     return (
-        <div className="min-w-[250px] bg-bg-1 text-color-text font-sans flex flex-col items-center ">
+        <div className="w-64 bg-bg-1 text-color-text font-sans flex flex-col items-center text-xs">
             <header className="bg-bg-2 p-4 m-0 rounded flex flex-col  items-center w-full">
                 <img alt="pause button" src="https://www.7speaking.com/wp-content/uploads/2024/07/Logo-7Speaking.webp" width="150px"/>
                 <h1 className="text-xl text-center w-full">
