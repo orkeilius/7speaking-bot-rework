@@ -1,8 +1,8 @@
 import { Storage } from "@plasmohq/storage"
+import { Constants } from "../utils/Constants";
 
 class StorageService {
     private readonly storage: Storage;
-    private readonly maxTimeUseDiffTooLong = 1000 * 60; // 10 minutes
 
     constructor() {
         this.storage = new Storage({ area: "local" });
@@ -82,6 +82,13 @@ class StorageService {
         await this.storage.set("lastTimeRun", Date.now());
     }
 
+    async getLastTime(){
+        return await this.get<number>("lastTime", 0);
+    }
+    async setLastTime(){
+        await this.storage.set("lastTime", Date.now());
+    }
+
     async getStatQuestionDone(){
         return await this.get<number>("statQuestionDone", 0);
     }
@@ -104,7 +111,7 @@ class StorageService {
     }
     async addStatTimeUse(){
         let diff = Date.now() - await this.getLastTimeRun()
-        if(diff >= this.maxTimeUseDiffTooLong){
+        if(diff >= Constants.maxTimeUseDiffTooLong){
             console.warn("skip")
             return
         }

@@ -1,4 +1,4 @@
-import {Selector} from "../utils/SelectorConstant";
+import {Constants} from "../utils/Constants";
 import {logMessage} from "~contents/utils/Logging";
 
 export class BeginnerWorkshopHandler implements RouteHandlerInterface {
@@ -6,7 +6,7 @@ export class BeginnerWorkshopHandler implements RouteHandlerInterface {
     readonly routeRegex = /^workshop.*beginners-workshop/;
 
     async handler() {
-        const nextButton = document.querySelector<HTMLElement>(Selector.NextButtonSelector);
+        const nextButton = document.querySelector<HTMLElement>(Constants.NextButtonSelector);
         console.log("next : ", nextButton)
         if (nextButton != null) {
             logMessage("➡️ Next button found, clicking...")
@@ -14,7 +14,7 @@ export class BeginnerWorkshopHandler implements RouteHandlerInterface {
             return
         }
 
-        const validateButton = document.querySelector<HTMLElement>(Selector.ValidateButtonSelector);
+        const validateButton = document.querySelector<HTMLElement>(Constants.ValidateButtonSelector);
         if(validateButton != null) {
             if (validateButton.hasAttribute("disabled")) {
                 this.fillQuiz()
@@ -26,7 +26,7 @@ export class BeginnerWorkshopHandler implements RouteHandlerInterface {
 
         }
 
-        const backButton = document.querySelector<HTMLElement>(Selector.BackButtonSelector);
+        const backButton = document.querySelector<HTMLElement>(Constants.BackButtonSelector);
         if(backButton != null) {
             logMessage("⬅️ Back button found, clicking...")
             backButton.click()

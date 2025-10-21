@@ -5,6 +5,7 @@ import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
 import {storageService} from "~contents/services/StorageService";
+import {Constants} from "~contents/utils/Constants";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
@@ -25,6 +26,7 @@ class Bot {
         setTimeout(() => this.loop(), 1000);
     }
     async main() {
+        await this.updateLastTime()
         const active = await storageService.getActive();
 
         const url = globalThis.location.href.replace("https://user.7speaking.com/", "");
@@ -43,6 +45,13 @@ class Bot {
         await route.handler()
     }
 
+    async updateLastTime() {
+        const delai = Date.now() - await storageService.getLastTime()
+        if (delai > Constants.maxTimeUseDiffTooLong)  {
+            await storageService.setActive(false)
+        }
+        await storageService.setLastTime()
+    }
 }
 
 console.log("Bot started")

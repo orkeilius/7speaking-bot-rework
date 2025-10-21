@@ -1,9 +1,9 @@
-import {Selector} from "~contents/utils/SelectorConstant";
+import {Constants} from "~contents/utils/Constants";
 import {logMessage} from "~contents/utils/Logging";
 import {storageService} from "~contents/services/StorageService";
 
 export abstract class QuestionInterface<T> {
-    protected abstract isDetected() :boolean;
+    abstract isDetected() :boolean;
 
     protected abstract getGoodAnswer(): Promise<T>;
     protected abstract getBadAnswer(): Promise<T>;
@@ -13,7 +13,7 @@ export abstract class QuestionInterface<T> {
     protected abstract getBadText() : string;
 
     async executeSubmit(): Promise<void> {
-        const btnContainer : HTMLElement = document.querySelector(Selector.QuizValidateSelector);
+        const btnContainer : HTMLElement = document.querySelector(Constants.QuizValidateSelector);
         btnContainer?.click();
     }
 

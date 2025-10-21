@@ -1,5 +1,7 @@
 
-export class Selector {
+export class Constants {
+
+    static readonly maxTimeUseDiffTooLong = 1000 * 60;
 
     static readonly NextButtonSelector = 'button.next__btn'
     static readonly ValidateButtonSelector = 'button.validate__btn'

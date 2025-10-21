@@ -1,4 +1,4 @@
-import {Selector} from "../utils/SelectorConstant";
+import {Constants} from "../utils/Constants";
 import {TimeUtils} from "../utils/TimeUtils";
 import {logMessage} from "~contents/utils/Logging";
 
@@ -10,10 +10,10 @@ export class LearningHandler implements RouteHandlerInterface {
 
     async handler() {
 
-        const PopupDialog = document.querySelector(Selector.PopUpDialogSelector)
+        const PopupDialog = document.querySelector(Constants.PopUpDialogSelector)
         if (PopupDialog != null) {
             logMessage("🛑 Pop up found,closing...")
-            PopupDialog.querySelector(Selector.ValidateButtonSelector)?.click()
+            PopupDialog.querySelector(Constants.ValidateButtonSelector)?.click()
         }
 
         const isTimerEnded = await new TimeUtils().isWaitingEnded()
@@ -22,12 +22,12 @@ export class LearningHandler implements RouteHandlerInterface {
             return
         }
 
-        const QuizButton = document.querySelector(Selector.VocabularyQuizSelector)
+        const QuizButton = document.querySelector(Constants.VocabularyQuizSelector)
         if (QuizButton != null) {
             logMessage("☝️🤓 quiz time!")
             QuizButton?.click()
         }
-        const QuizTab = document.querySelector(Selector.QuizTabSelector)
+        const QuizTab = document.querySelector(Constants.QuizTabSelector)
         if (QuizTab != null) {
             logMessage("☝️🤓 quiz time!")
             QuizTab?.click()

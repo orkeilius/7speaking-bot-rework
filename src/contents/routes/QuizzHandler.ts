@@ -7,7 +7,7 @@ import {DragAndDrop} from "~contents/question/DragAndDrop";
 
 export class QuizzHandler implements RouteHandlerInterface {
 
-    static readonly listQuestion: QuestionInterface[] = [new TextInput(), new MultipleResponse(), new DragAndDrop(),new EndScreen()]
+    static readonly listQuestion: QuestionInterface<any>[] = [new TextInput(), new MultipleResponse(), new DragAndDrop(),new EndScreen()]
 
     readonly routeRegex = /^quiz/;
 
