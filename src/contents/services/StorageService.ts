@@ -119,6 +119,12 @@ class StorageService {
         await this.storage.set("statTimeUse", current + diff);
     }
 
+    async getLastQuizCompleted(){
+        return await this.get<string>("lastQuizCompleted","");
+    }
+    async setLastQuizCompleted(url: string) {
+        await this.storage.set('lastQuizCompleted',url)
+    }
 }
 
 export const storageService = new StorageService();

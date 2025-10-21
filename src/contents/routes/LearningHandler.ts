@@ -1,6 +1,7 @@
 import {Constants} from "../utils/Constants";
 import {TimeUtils} from "../utils/TimeUtils";
 import {logMessage} from "~contents/utils/Logging";
+import {storageService} from "~contents/services/StorageService";
 
 
 
@@ -14,6 +15,13 @@ export class LearningHandler implements RouteHandlerInterface {
         if (PopupDialog != null) {
             logMessage("🛑 Pop up found,closing...")
             PopupDialog.querySelector(Constants.ValidateButtonSelector)?.click()
+        }
+
+        if(await storageService.getLastQuizCompleted() == document.location.href){
+            logMessage("⁉️ lesson already done going back")
+            await storageService.setLastQuizCompleted("")
+            globalThis.location.replace("https://user.7speaking.com/home");
+
         }
 
         const isTimerEnded = await new TimeUtils().isWaitingEnded()
