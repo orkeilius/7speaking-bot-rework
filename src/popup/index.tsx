@@ -40,6 +40,15 @@ export default function IndexPopup() {
             </button>
             <Settings/>
             <Stats/>
+            <footer className="bg-bg-2 p-2 m-0 rounded flex  w-full rounded-t-2xl  items-center justify-center gap-1">
+                <p className="text-nowrap">made by orkeilius </p>
+                <p className="text-text-2 text-2xl">·</p>
+                <iframe
+                    className="inline-block align-middle"
+                    src="https://ghbtns.com/github-btn.html?user=orkeilius&repo=7speaking-bot-rework&type=star&count=true&size=small"
+                    width="80" height="20" title="GitHub"></iframe>
+
+            </footer>
         </div>
     )
 }
