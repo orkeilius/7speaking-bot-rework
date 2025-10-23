@@ -1,13 +1,16 @@
 import "../style.css"
-import React from "react";
+import {useState} from "react";
 import {storageService} from "~contents/services/StorageService";
 import Settings from "~popup/component/Settings";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
 import Stats from "~popup/component/Stats";
+import {updateService} from "~contents/services/UpdateService";
+import UpdateWarning from "~popup/component/UpdateWarning";
 
 export default function IndexPopup() {
 
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = useState(false);
+    const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
 
 
     const updateActive = () => {
@@ -18,6 +21,8 @@ export default function IndexPopup() {
 
     async function fetchSettings() {
         setActive(await storageService.getActive());
+        setIsUpdateAvailable(await updateService.getUpdateAvailable())
+        console.log(await updateService.getUpdateAvailable());
     }
 
     setInterval(() => {
@@ -35,6 +40,7 @@ export default function IndexPopup() {
                     Bot Rework
                 </h1>
             </header>
+            {isUpdateAvailable && <UpdateWarning/>}
             <button className="w-20 h-20 shadow p-4 rounded-full bg-bg-2 text-primary m-4 " onClick={updateActive}>
                 {active ? <FaRegCirclePause className="w-full h-full"/> : <FaRegCirclePlay className="w-full h-full"/>}
             </button>

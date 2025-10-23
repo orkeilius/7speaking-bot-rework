@@ -6,6 +6,7 @@ import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
 import {storageService} from "~contents/services/StorageService";
 import {Constants} from "~contents/utils/Constants";
+import {updateService} from "~contents/services/UpdateService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
@@ -37,7 +38,7 @@ class Bot {
             return
         }
         if (!active) {
-            logMessage("🧠 ready to learn !")
+            logMessage(await updateService.getUpdateAvailable() ? "🔁 Update available":"🧠 ready to learn !")
             return
         }
         await storageService.addStatTimeUse()

@@ -3,7 +3,7 @@
   "displayName": "7speaking bot rework",
   "version": "0.0.1",
   "description": "A bot for 7speaking",
-  "author": "Orkeilius. <foss@plasmo.com>",
+  "author": "orkeilius. <bot.7speaking.rework@hotmail.com>",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@plasmohq/storage": "^1.15.0",
+    "compare-versions": "^6.1.1",
     "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
