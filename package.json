@@ -1,7 +1,7 @@
 {
   "name": "7speaking-bot-rework",
   "displayName": "7speaking bot rework",
-  "version": "0.0.1",
+  "version": "0.0.16",
   "description": "A bot for 7speaking",
   "author": "orkeilius. <bot.7speaking.rework@hotmail.com>",
   "scripts": {
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@plasmohq/mozilla-addons-api": "^2.8.1",
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
@@ -38,7 +39,9 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "7speaking-bot-rework@github.com"
+        "id": "7speaking-bot-rework@github.com",
+
+        "update_url": "https://raw.githubusercontent.com/orkeilius/7speaking-bot-rework/refs/heads/master/release/firefox_update.json"
       }
     }
   }
