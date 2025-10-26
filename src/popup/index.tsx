@@ -37,7 +37,7 @@ export default function IndexPopup() {
                 <img alt="pause button" src="https://www.7speaking.com/wp-content/uploads/2024/07/Logo-7Speaking.webp"
                      width="150px"/>
                 <h1 className="text-xl text-center w-full">
-                    Bot Rework
+                    Bot Rework (beta)
                 </h1>
             </header>
             {isUpdateAvailable && <UpdateWarning/>}
