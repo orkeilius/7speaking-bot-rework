@@ -1,13 +1,12 @@
-import dotenv from "dotenv";
-import path from "path";
-
-// Charger explicitement le fichier .env à partir du répertoire de travail courant
-dotenv.config({path: path.resolve(process.cwd(), ".env")});
-
-import {execSync} from "child_process";
+import {execSync} from "node:child_process";
 import {MozillaAddonsAPI} from "@plasmohq/mozilla-addons-api";
 import * as fs from "node:fs";
 import * as https from "node:https";
+import path from "node:path";
+import dotenv from "dotenv";
+
+
+dotenv.config({path: path.resolve(process.cwd(), ".env")});
 
 /**
  * Classe pour gérer le build et la publication de l'extension Firefox
@@ -17,7 +16,7 @@ class FirefoxBuilder {
         this.tag = tag;
         this.zipPath = './build/firefox-mv3-prod.zip';
         this.xpiPath = './build/firefox-mv3-prod.xpi';
-        this.outputPath = `./release/firefox-${tag}.xpi`;
+        this.outputPath = `./release/7speaking-bot-rework_firefox-${tag}.xpi`;
         this.updateJsonPath = './release/firefox_update.json';
         this.mozilla = new MozillaAddonsAPI({
             extId: process.env.FIREFOX_ID,
@@ -95,7 +94,7 @@ class FirefoxBuilder {
 
         updateJson.addons[process.env.FIREFOX_ID].updates.push({
             version: this.tag,
-            update_link: `https://github.com/orkeilius/7speaking-bot-rework/releases/download/${this.tag}/firefox-${this.tag}.xpi`
+            update_link: `https://github.com/orkeilius/7speaking-bot-rework/releases/download/${this.tag}/7speaking-bot-rework_firefox-${this.tag}.xpi`
         });
 
         fs.writeFileSync(this.updateJsonPath, JSON.stringify(updateJson, null, 2));
