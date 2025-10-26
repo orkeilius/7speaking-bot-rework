@@ -5,6 +5,10 @@
         {
           "version": "0.0.16",
           "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/0.0.16/firefox-0.0.16.xpi"
+        },
+        {
+          "version": "0.0.17",
+          "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/0.0.17/7speaking-bot-rework_firefox-0.0.17.xpi"
         }
       ]
     }
