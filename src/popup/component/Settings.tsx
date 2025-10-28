@@ -35,8 +35,8 @@ export default function Settings(){
         setFixTime(await storageService.getFixedTime() / 1000 / 60);
     }
 
-    setInterval(() => {
-        fetchSettings();
+    setInterval(async () => {
+        setShowOverlay(await storageService.getShowOverlay());
     },1000);
     fetchSettings()
 
