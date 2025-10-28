@@ -10,6 +10,8 @@ inspired by [7speaking bot legacy](https://github.com/Dixel1/7speaking-bot-legac
 - overlay
 - stat
 
+![overlay on the website](./docs/assets/exemple.jpg)
+
 ## Install
 ### Firefox
 1. Download the .xpi file from the [releases](https://github.com/orkeilius/7speaking-bot-rework/releases/)
