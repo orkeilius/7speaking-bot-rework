@@ -20,6 +20,17 @@ function getReactElement(e: Element | null) {
     return null;
 }
 
+function getAnswerToeicObject(){
+    const container = document.querySelector(".questions_variantsContainer");
+    const reactElem = getReactElement(container);
+    if (!reactElem) {
+        return "";
+    }
+    if (reactElem.pendingProps?.children?.[0]?.props?.children?.[0].props?.question?.errorMessage) {
+        return String(reactElem.pendingProps.children[0].props.children[0].props.question.errorMessage);
+    }
+}
+
 function getAnswerObject() {
     const container = document.querySelector(".question-container");
     const reactElem = getReactElement(container);
@@ -110,6 +121,12 @@ function executeDragAndDrop(draggableId: string, droppableId: string) {
 globalThis.addEventListener('GET_ANSWER_REQUEST', () => {
     const answer = getAnswerObject();
     globalThis.dispatchEvent(new CustomEvent('GET_ANSWER_RESPONSE', {
+        detail: {answer}
+    }));
+});
+globalThis.addEventListener('GET_ANSWER_TOEIC_REQUEST', () => {
+    const answer = getAnswerToeicObject();
+    globalThis.dispatchEvent(new CustomEvent('GET_ANSWER_TOEIC_RESPONSE', {
         detail: {answer}
     }));
 });

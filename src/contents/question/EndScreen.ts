@@ -14,10 +14,16 @@ export class EndScreen extends QuestionInterface<void> {
     }
 
 
-    async getGoodAnswer(): Promise<void> {return}
-    async getBadAnswer(): Promise<void> {return}
+    async getGoodAnswer(): Promise<void> {
+        // Not a quizz
+    }
+    async getBadAnswer(): Promise<void> {
+        // Not a quizz
+    }
+    async executeAnswer(answer: void): Promise<void> {
+        // Not a quizz
+    }
 
-    async executeAnswer(answer: void): Promise<void> {return}
     async executeSubmit(): Promise<void> {
         document.querySelector<HTMLButtonElement>(".result-container button.back")?.click()
         await storageService.addStatQuizDone()

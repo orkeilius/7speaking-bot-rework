@@ -20,6 +20,10 @@ class MainWorldHostService {
         return this.callFunction('GET_ANSWER').then((detail: any) => detail ? detail.answer : "");
     }
 
+    async getReactToeicAnswer(): Promise<string> {
+        return this.callFunction('GET_ANSWER_TOEIC').then((detail: any) => detail ? detail.answer : "");
+    }
+
     async getReactAnswerDragDrop(): Promise<DragAndDropRawAnswer> {
         return this.callFunction('GET_ANSWER_DRAGDROP').then((detail: any) => detail ? detail.answer : null);
     }

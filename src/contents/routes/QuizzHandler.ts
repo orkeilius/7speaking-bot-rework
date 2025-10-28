@@ -3,13 +3,23 @@ import {TextInput} from "~contents/question/TextInput";
 import {EndScreen} from "~contents/question/EndScreen";
 import {MultipleResponse} from "~contents/question/MultipleResponse";
 import {DragAndDrop} from "~contents/question/DragAndDrop";
+import {ToeicMultipleResponse} from "~contents/question/ToeicMultipleResponse";
+import {ToeicInterstitial} from "~contents/question/ToeicInterstitial";
 
 
 export class QuizzHandler implements RouteHandlerInterface {
 
-    static readonly listQuestion: QuestionInterface<any>[] = [new TextInput(), new MultipleResponse(), new DragAndDrop(),new EndScreen()]
+    static readonly listQuestion: QuestionInterface<any>[] = [
+        new TextInput(),
+        new MultipleResponse(),
+        new DragAndDrop(),
+        new EndScreen(),
+        new ToeicMultipleResponse(),
+        new ToeicInterstitial()
+    ];
 
-    readonly routeRegex = /^\/rrquiz/;
+    readonly routeRegex = /^\/quiz/;
+
     isDetected(): boolean {
         let quizDetected = (QuizzHandler.listQuestion.some(elem => elem.isDetected()))
         let pathDetected = this.routeRegex.test(globalThis.location.pathname);
@@ -18,7 +28,7 @@ export class QuizzHandler implements RouteHandlerInterface {
 
     async handler() {
         const handler = QuizzHandler.listQuestion.find(elem => elem.isDetected())
-        if(handler == undefined){
+        if (handler == undefined) {
             console.log("❓ Question type not found")
             return
         }
