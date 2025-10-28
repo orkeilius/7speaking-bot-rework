@@ -55,7 +55,7 @@ function executeDragAndDrop(draggableId: string, droppableId: string) {
         let onDragEndCallback = null;
 
         let current = reactInstance;
-        while (current && !onDragEndCallback) {
+        while (current) {
             if (current.return) {
                 current = current.return;
                 if (current.memoizedProps?.onDragEnd) {
@@ -76,8 +76,8 @@ function executeDragAndDrop(draggableId: string, droppableId: string) {
         }
 
         // Trouver la source droppable
-        const sourceDroppable = dragElem.closest('[data-rbd-droppable-id]');
-        const sourceDroppableId = sourceDroppable?.getAttribute('data-rbd-droppable-id');
+        const sourceDroppable = dragElem.closest<HTMLElement>('[data-rbd-droppable-id]');
+        const sourceDroppableId = sourceDroppable?.dataset.rbdDroppableId;
 
         const sourceIndex = Array.from(sourceDroppable?.querySelectorAll('[data-rbd-draggable-id]') || [])
             .indexOf(dragElem);
@@ -88,7 +88,7 @@ function executeDragAndDrop(draggableId: string, droppableId: string) {
             type: 'DEFAULT',
             source: {
                 droppableId: sourceDroppableId,
-                index: sourceIndex >= 0 ? sourceIndex : 0
+                index: Math.max(0,sourceIndex)
             },
             destination: {
                 droppableId: String(droppableId),

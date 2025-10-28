@@ -8,7 +8,7 @@ export class HomeHandler implements RouteHandlerInterface{
     }
 
     async handler() {
-        const page = document.querySelector(".scrollableList .scrollableList__content .MuiButtonBase-root")
+        const page = document.querySelector<HTMLElement>(".scrollableList .scrollableList__content .MuiButtonBase-root")
         if(page == null){
             logMessage("🤔 Lesson not found")
             return

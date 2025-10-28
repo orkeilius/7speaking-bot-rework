@@ -33,7 +33,7 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://user.7speaking.com/*"
     ],
     "permissions": [
       "scripting"

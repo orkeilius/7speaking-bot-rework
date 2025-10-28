@@ -17,7 +17,7 @@ export class LearningHandler implements RouteHandlerInterface {
         const PopupDialog = document.querySelector(Constants.PopUpDialogSelector)
         if (PopupDialog != null) {
             logMessage("🛑 Pop up found,closing...")
-            PopupDialog.querySelector(Constants.ValidateButtonSelector)?.click()
+            PopupDialog.querySelector<HTMLElement>(Constants.ValidateButtonSelector)?.click()
         }
 
         if(await storageService.getLastQuizCompleted() == document.location.href){
@@ -33,12 +33,12 @@ export class LearningHandler implements RouteHandlerInterface {
             return
         }
 
-        const QuizButton = document.querySelector(Constants.VocabularyQuizSelector)
+        const QuizButton = document.querySelector<HTMLElement>(Constants.VocabularyQuizSelector)
         if (QuizButton != null) {
             logMessage("☝️🤓 quiz time!")
             QuizButton?.click()
         }
-        const QuizTab = document.querySelector(Constants.QuizTabSelector)
+        const QuizTab = document.querySelector<HTMLElement>(Constants.QuizTabSelector)
         if (QuizTab != null) {
             logMessage("☝️🤓 quiz time!")
             QuizTab?.click()
