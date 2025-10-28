@@ -8,9 +8,7 @@ import {storageService} from "~contents/services/StorageService";
 export class LearningHandler implements RouteHandlerInterface {
 
     isDetected(): boolean {
-        let isQuizButton : boolean = document.querySelector<HTMLElement>(Constants.VocabularyQuizSelector) != null
-        let isQuizTab : boolean = document.querySelector<HTMLElement>(Constants.QuizTabSelector) != null
-        return isQuizButton || isQuizTab
+        return this.getQuizButton() != null
     }
 
     async handler() {
@@ -34,17 +32,20 @@ export class LearningHandler implements RouteHandlerInterface {
             return
         }
 
-        const QuizButton = document.querySelector<HTMLElement>(Constants.VocabularyQuizSelector)
-        if (QuizButton != null) {
+        const quiz = this.getQuizButton()
+        if (quiz != null) {
             logMessage("☝️🤓 quiz time!")
-            QuizButton?.click()
+            quiz.click()
         }
-        const QuizTab = document.querySelector<HTMLElement>(Constants.QuizTabSelector)
-        if (QuizTab != null) {
-            logMessage("☝️🤓 quiz time!")
-            QuizTab?.click()
-        }
+    }
 
+    getQuizButton(): HTMLElement | null {
+        const quiz = [
+            document.querySelector<HTMLElement>(Constants.VocabularyQuizSheetSelector),
+            document.querySelector<HTMLElement>(Constants.QuizTabSelector),
+            document.querySelector<HTMLElement>(Constants.VocabularyQuizSelector)
+        ]
+        return quiz.find(e=> e!=null) ?? null
     }
 
 }
