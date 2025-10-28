@@ -13,7 +13,7 @@ export const config: PlasmoCSConfig = {
     all_frames: true
 }
 
-const routesHandler: RouteHandlerInterface[] = [new HomeHandler(), new BeginnerWorkshopHandler(),new LearningHandler(),new QuizzHandler()];
+const routesHandler: RouteHandlerInterface[] = [new QuizzHandler(),new HomeHandler(), new BeginnerWorkshopHandler(),new LearningHandler()];
 
 class Bot {
 

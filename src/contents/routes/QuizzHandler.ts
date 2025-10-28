@@ -9,9 +9,11 @@ export class QuizzHandler implements RouteHandlerInterface {
 
     static readonly listQuestion: QuestionInterface<any>[] = [new TextInput(), new MultipleResponse(), new DragAndDrop(),new EndScreen()]
 
-    readonly routeRegex = /^\/quiz/;
+    readonly routeRegex = /^\/rrquiz/;
     isDetected(): boolean {
-        return this.routeRegex.test(globalThis.location.pathname);
+        let quizDetected = (QuizzHandler.listQuestion.some(elem => elem.isDetected()))
+        let pathDetected = this.routeRegex.test(globalThis.location.pathname);
+        return quizDetected || pathDetected;
     }
 
     async handler() {

@@ -7,9 +7,10 @@ import {storageService} from "~contents/services/StorageService";
 
 export class LearningHandler implements RouteHandlerInterface {
 
-    readonly routeRegex = /^\/(?:workshop.*(?:vocabulary|linguistic-content)|document|professional-survival-kit).*$/;
     isDetected(): boolean {
-        return this.routeRegex.test(globalThis.location.pathname);
+        let isQuizButton : boolean = document.querySelector<HTMLElement>(Constants.VocabularyQuizSelector) != null
+        let isQuizTab : boolean = document.querySelector<HTMLElement>(Constants.QuizTabSelector) != null
+        return isQuizButton || isQuizTab
     }
 
     async handler() {
