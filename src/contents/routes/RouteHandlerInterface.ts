@@ -1,4 +1,4 @@
 abstract class RouteHandlerInterface {
-    abstract routeRegex : RegExp;
-    abstract handler: () => Promise<void>;
+    abstract isDetected(): boolean;
+    abstract handler(): Promise<void>;
 }

@@ -30,8 +30,7 @@ class Bot {
         await this.updateLastTime()
         const active = await storageService.getActive();
 
-        const url = globalThis.location.href.replace("https://user.7speaking.com/", "");
-        const route = routesHandler.find(handler => handler.routeRegex.test(url));
+        const route = routesHandler.find(handler => handler.isDetected());
 
         if (route === undefined) {
             logMessage("🟡 page unknown")

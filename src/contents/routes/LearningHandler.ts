@@ -7,7 +7,10 @@ import {storageService} from "~contents/services/StorageService";
 
 export class LearningHandler implements RouteHandlerInterface {
 
-    readonly routeRegex = /^(?:workshop.*(?:vocabulary|linguistic-content)|document|professional-survival-kit).*$/;
+    readonly routeRegex = /^\/(?:workshop.*(?:vocabulary|linguistic-content)|document|professional-survival-kit).*$/;
+    isDetected(): boolean {
+        return this.routeRegex.test(globalThis.location.pathname);
+    }
 
     async handler() {
 

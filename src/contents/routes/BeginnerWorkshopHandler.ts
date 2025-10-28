@@ -3,7 +3,10 @@ import {logMessage} from "~contents/utils/Logging";
 
 export class BeginnerWorkshopHandler implements RouteHandlerInterface {
 
-    readonly routeRegex = /^workshop.*beginners-workshop/;
+    readonly routeRegex = /^\/workshop.*beginners-workshop/;
+    isDetected(): boolean {
+        return this.routeRegex.test(globalThis.location.pathname);
+    }
 
     async handler() {
         const nextButton = document.querySelector<HTMLElement>(Constants.NextButtonSelector);
