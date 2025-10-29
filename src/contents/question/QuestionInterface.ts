@@ -15,6 +15,11 @@ export abstract class QuestionInterface<T> {
     async executeSubmit(): Promise<void> {
         const btnContainer : HTMLElement = document.querySelector(Constants.QuizValidateSelector);
         btnContainer?.click();
+        /// wait for react re-render
+        await new Promise(r => setTimeout(r, 500));
+
+        const btnNext : HTMLElement = document.querySelector(Constants.QuizValidateSelector);
+        btnNext?.click();
     }
 
     public handler = async (): Promise<void> => {

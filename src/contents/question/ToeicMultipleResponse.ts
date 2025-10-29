@@ -7,10 +7,11 @@ export class ToeicMultipleResponse extends QuestionInterface<string> {
     }
 
     protected getGoodText(): string {
-       return "📝 Clicking button"
+        return "📝 Clicking button"
     }
+
     protected getBadText(): string {
-            return "📝 Tapping on the screen"
+        return "📝 Tapping on the screen"
     }
 
     async getGoodAnswer(): Promise<string> {
@@ -31,11 +32,17 @@ export class ToeicMultipleResponse extends QuestionInterface<string> {
     }
 
     async executeSubmit(): Promise<void> {
-       const submitButton = document.querySelector<HTMLInputElement>("div.buttons_container button[class*='MuiButton-containedPrimary']");
-       submitButton?.click();
+        const submitButton = document.querySelector<HTMLInputElement>("div.buttons_container button[class*='MuiButton-containedPrimary']");
+        submitButton?.click();
+        //small delay to allow react to re-render
+        await new Promise(r => setTimeout(r, 500));
+
+        const btnNext: HTMLElement = document.querySelector("div.buttons_container button[class*='MuiButton-containedPrimary']");
+        btnNext?.click();
+
     }
 
-    getButtons():{label: string, input: HTMLElement}[]{
+    getButtons(): { label: string, input: HTMLElement }[] {
         return Array.from(document.querySelectorAll<HTMLElement>("div.choice_variant input[type=radio]")).map(
             (input) => {
                 let label = input.closest("label.MuiFormControlLabel-root").querySelector(".MuiFormControlLabel-label").innerHTML
