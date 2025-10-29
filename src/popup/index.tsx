@@ -1,6 +1,6 @@
 import "../style.css"
 import {useState} from "react";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 import Settings from "~popup/component/Settings";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
 import Stats from "~popup/component/Stats";
@@ -15,12 +15,12 @@ export default function IndexPopup() {
 
     const updateActive = () => {
         setActive(!active);
-        storageService.setActive(!active)
+        storageService.set(StorageKeys.ACTIVE,!active)
 
     }
 
     async function fetchSettings() {
-        setActive(await storageService.getActive());
+        setActive(await storageService.get(StorageKeys.ACTIVE));
         setIsUpdateAvailable(await updateService.getUpdateAvailable())
         console.log(await updateService.getUpdateAvailable());
     }

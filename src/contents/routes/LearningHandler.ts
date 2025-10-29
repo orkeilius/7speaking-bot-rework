@@ -1,7 +1,7 @@
 import {Constants} from "../utils/Constants";
 import {TimeUtils} from "../utils/TimeUtils";
 import {logMessage} from "~contents/utils/Logging";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 
 
@@ -19,9 +19,9 @@ export class LearningHandler implements RouteHandlerInterface {
             PopupDialog.querySelector<HTMLElement>(Constants.ValidateButtonSelector)?.click()
         }
 
-        if(await storageService.getLastQuizCompleted() == document.location.href){
+        if(await storageService.get<string>(StorageKeys.LAST_QUIZ_COMPLETED) == document.location.href){
             logMessage("⁉️ lesson already done going back")
-            await storageService.setLastQuizCompleted("")
+            await storageService.set(StorageKeys.LAST_QUIZ_COMPLETED,"")
             globalThis.location.replace("https://user.7speaking.com/home");
 
         }

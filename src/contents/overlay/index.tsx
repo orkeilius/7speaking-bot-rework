@@ -2,7 +2,7 @@ import type {PlasmoCSConfig, PlasmoGetStyle} from "plasmo";
 import styleText from "data-text:~style.css";
 import {FaRegCirclePlay, FaRegCirclePause, FaEyeSlash} from "react-icons/fa6";
 import {useEffect, useState} from "react";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 export const config: PlasmoCSConfig = {
     matches: ["https://user.7speaking.com/*"],
@@ -23,9 +23,9 @@ const Overlay = () => {
     const [visible, setVisible] = useState<boolean>(true);
 
     const updateValue = async () => {
-        setText(await storageService.getLog())
-        setActive(await storageService.getActive())
-        setVisible(await storageService.getShowOverlay())
+        setText(await storageService.get(StorageKeys.LOG));
+        setActive(await storageService.get(StorageKeys.ACTIVE));
+        setVisible(await storageService.get(StorageKeys.SHOW_OVERLAY));
     };
 
     useEffect(() => {
@@ -37,12 +37,12 @@ const Overlay = () => {
     });
 
     const toggleActive = async () => {
-        await storageService.setActive(!active);
+        await storageService.set(StorageKeys.ACTIVE,!active);
         setActive(!active);
     }
     const toggleVisible = async () => {
-        await storageService.setShowOverlay(!visible);
-        await storageService.setActive(false)
+        await storageService.set(StorageKeys.SHOW_OVERLAY,!visible);
+        await storageService.set(StorageKeys.ACTIVE,false)
         setVisible(!visible);
     }
 

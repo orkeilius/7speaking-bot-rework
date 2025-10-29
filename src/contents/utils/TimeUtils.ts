@@ -1,5 +1,5 @@
 import {logMessage} from "~contents/utils/Logging";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 export class TimeUtils {
 
@@ -7,29 +7,29 @@ export class TimeUtils {
     static readonly defaultTiming = 60 * 1000 * 20;
 
     async isWaitingEnded() {
-        if(document.location.href !== await storageService.getTimerUrl()){
+        if(document.location.href !== await storageService.get(StorageKeys.TIMER_URL)){
             await this.createTimer()
             return false
         }
 
-        let timerEnd = await storageService.getTimerEnd()
+        let timerEnd = await storageService.get<number>(StorageKeys.TIMER_END)
         if(timerEnd > Date.now()){
             logMessage(`⏱️ waiting (time left ${Math.floor((timerEnd - Date.now()) / 60000)}mins ${Math.floor(((timerEnd - Date.now()) % 60000) / 1000)}s)`)
             return false
         }
-        await storageService.setTimerUrl("")
+        await storageService.set(StorageKeys.TIMER_URL, "")
         return true
     }
 
     async createTimer(){
-        let time = await storageService.getFixedTime()
-        if(await storageService.getUseRealtime()){
+        let time = await storageService.get<number>(StorageKeys.CUSTOM_TIMER)
+        if(await storageService.get<boolean>(StorageKeys.USE_RECOMMENDED_TIME)){
             time = await this.findRealTime()
         }
         const newTime = Date.now() + (time * (Math.random() + 0.5))
 
-        await storageService.setTimerUrl(document.location.href)
-        await storageService.setTimerEnd(newTime)
+        await storageService.set(StorageKeys.TIMER_URL, document.location.href)
+        await storageService.set(StorageKeys.TIMER_END, newTime)
         logMessage("⏱️ setting timer for "+ new Date(newTime).toLocaleTimeString())
 
     }

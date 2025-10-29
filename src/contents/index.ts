@@ -4,7 +4,7 @@ import {LearningHandler} from "~contents/routes/LearningHandler";
 import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 import {Constants} from "~contents/utils/Constants";
 import {updateService} from "~contents/services/UpdateService";
 
@@ -28,7 +28,7 @@ class Bot {
     }
     async main() {
         await this.updateLastTime()
-        const active = await storageService.getActive();
+        const active = await storageService.get(StorageKeys.ACTIVE);
 
         const route = routesHandler.find(handler => handler.isDetected());
 
@@ -40,17 +40,17 @@ class Bot {
             logMessage(await updateService.getUpdateAvailable() ? "🔁 Update available":"🧠 ready to learn !")
             return
         }
-        await storageService.addStatTimeUse()
-        await storageService.setLastTimeRun()
+        await storageService.update(StorageKeys.STAT_TIME_USE)
+        await storageService.update(StorageKeys.LAST_TIME_RUN)
         await route.handler()
     }
 
     async updateLastTime() {
-        const delai = Date.now() - await storageService.getLastTime()
+        const delai = Date.now() - await storageService.get<number>(StorageKeys.LAST_TIME)
         if (delai > Constants.maxTimeUseDiffTooLong)  {
-            await storageService.setActive(false)
+            await storageService.set(StorageKeys.ACTIVE,false)
         }
-        await storageService.setLastTime()
+        await storageService.update(StorageKeys.LAST_TIME)
     }
 }
 

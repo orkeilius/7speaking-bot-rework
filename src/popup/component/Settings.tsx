@@ -1,4 +1,4 @@
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 import ElemRow from "~popup/component/ElemRow";
 import React from "react";
 
@@ -11,32 +11,32 @@ export default function Settings(){
 
     const updateErrorProbability = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorProbability(Number.parseFloat(e.target.value));
-        storageService.setErrorProbability(Number.parseFloat(e.target.value) / 100);
+        storageService.set(StorageKeys.ERROR_PROBABILITY,Number.parseFloat(e.target.value) / 100);
     }
 
     const updateShowOverlay = (e: React.ChangeEvent<HTMLInputElement>) => {
         setShowOverlay(e.target.checked);
-        storageService.setShowOverlay(e.target.checked);
+        storageService.set(StorageKeys.SHOW_OVERLAY,e.target.checked);
     }
 
     const updateUseRealtime = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUseRealtime(e.target.checked);
-        storageService.setUseRealtime(e.target.checked)
+        storageService.set(StorageKeys.USE_RECOMMENDED_TIME, e.target.checked)
     }
     const updateFixedTime = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFixTime(Number.parseInt(e.target.value, 10));
-        storageService.setFixedTime(Number.parseInt(e.target.value, 10) * 1000 * 60);
+        storageService.set(StorageKeys.CUSTOM_TIMER,Number.parseInt(e.target.value, 10) * 1000 * 60);
     }
 
     async function fetchSettings() {
-        setErrorProbability(await storageService.getErrorProbability() * 100);
-        setShowOverlay(await storageService.getShowOverlay());
-        setUseRealtime(await storageService.getUseRealtime())
-        setFixTime(await storageService.getFixedTime() / 1000 / 60);
+        setErrorProbability(await storageService.get<number>(StorageKeys.ERROR_PROBABILITY) * 100);
+        setShowOverlay(await storageService.get(StorageKeys.SHOW_OVERLAY));
+        setUseRealtime(await storageService.get(StorageKeys.USE_RECOMMENDED_TIME))
+        setFixTime(await storageService.get<number>(StorageKeys.CUSTOM_TIMER) / 1000 / 60);
     }
 
     setInterval(async () => {
-        setShowOverlay(await storageService.getShowOverlay());
+        setShowOverlay(await storageService.get(StorageKeys.SHOW_OVERLAY));
     },1000);
     fetchSettings()
 

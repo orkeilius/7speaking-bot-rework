@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import ElemRow from "~popup/component/ElemRow";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 export default function Stats(){
 
@@ -10,9 +10,9 @@ export default function Stats(){
 
     useEffect(() => {
         async function fetchSettings() {
-            setNbQuestionDone(await storageService.getStatQuestionDone());
-            setNbQuizDone(await storageService.getStatQuizDone());
-            setTimeSpend(await storageService.getStatTimeUse());
+            setNbQuestionDone(await storageService.get(StorageKeys.STAT_QUESTION_DONE));
+            setNbQuizDone(await storageService.get(StorageKeys.STAT_QUIZ_DONE));
+            setTimeSpend(await storageService.get(StorageKeys.STAT_TIME_USE));
         }
         fetchSettings();
     }, []);

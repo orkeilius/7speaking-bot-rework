@@ -1,6 +1,6 @@
 import {Constants} from "~contents/utils/Constants";
 import {logMessage} from "~contents/utils/Logging";
-import {storageService} from "~contents/services/StorageService";
+import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 export abstract class QuestionInterface<T> {
     abstract isDetected() :boolean;
@@ -19,7 +19,7 @@ export abstract class QuestionInterface<T> {
 
     public handler = async (): Promise<void> => {
         try {
-            const errorProbility =  await storageService.getErrorProbability()
+            const errorProbility =  await storageService.get<number>(StorageKeys.ERROR_PROBABILITY)
             const makeError = Math.random() < errorProbility;
 
             const answer: T = makeError ? await this.getBadAnswer() : await this.getGoodAnswer();
@@ -28,7 +28,7 @@ export abstract class QuestionInterface<T> {
             await this.executeAnswer(answer);
             await this.executeSubmit()
 
-            await storageService.addStatQuestionDone()
+            await storageService.update(StorageKeys.STAT_QUESTION_DONE);
         } catch (error) {
             await logMessage(`⚠️ Error executing good answer, (${error})`);
         }
