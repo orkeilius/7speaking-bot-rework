@@ -20,16 +20,16 @@ class StorageService {
 
     public async set<T>(key: StorageKeys,value:T): Promise<void> {
         if(key.customSetter){
-            throw new Error(`Use custom setter for key ${key.key} use update() instead.`);
+            throw new TypeError(`Use custom setter for key ${key.key} use update() instead.`);
         }
         if(typeof value !== typeof key.defaultValue){
-            throw new Error(`Invalid type for key ${key.key}. Expected ${typeof key.defaultValue} but got ${typeof value}`);
+            throw new TypeError(`Invalid type for key ${key.key}. Expected ${typeof key.defaultValue} but got ${typeof value}`);
         }
         await this.storage.set(key.key, value);
     }
     public async update(key: StorageKeys): Promise<void> {
         if(!key.customSetter){
-            throw new Error(`Use standard setter for key ${key.key} use set() instead.`);
+            throw new TypeError(`Use standard setter for key ${key.key} use set() instead.`);
         }
         const value = await key.customSetter();
         await this.storage.set(key.key, value);
@@ -43,7 +43,8 @@ export class StorageKeys {
     public static readonly LOG = new StorageKeys("log", "⏱️ waiting...");
     public static readonly TIMER_URL = new StorageKeys("timerUrl", "");
     public static readonly TIMER_END = new StorageKeys("timerEnd", 0);
-    public static readonly CUSTOM_TIMER = new StorageKeys("fixTime", 1000 * 60 * 20);
+    public static readonly CUSTOM_TIMER_QUIZ = new StorageKeys("customTimerQuiz", 1000 * 60 * 20);
+    public static readonly CUSTOM_TIMER_QUESTION = new StorageKeys("customTimerQuestion", 1000 * 45);
     public static readonly USE_RECOMMENDED_TIME = new StorageKeys("useRealtime", true);
     public static readonly ERROR_PROBABILITY = new StorageKeys("errorProbability", Math.random() / 3 + 0.1);
     public static readonly SHOW_OVERLAY = new StorageKeys("showOverlay", true)

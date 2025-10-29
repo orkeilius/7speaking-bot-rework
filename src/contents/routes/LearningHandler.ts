@@ -1,8 +1,7 @@
 import {Constants} from "../utils/Constants";
-import {TimeUtils} from "../utils/TimeUtils";
+import {TimerType, timeService} from "~contents/services/TimerService";
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
-
 
 
 export class LearningHandler implements RouteHandlerInterface {
@@ -26,9 +25,7 @@ export class LearningHandler implements RouteHandlerInterface {
 
         }
 
-        const isTimerEnded = await new TimeUtils().isWaitingEnded()
-        if(!isTimerEnded){
-
+        if(!await timeService.isWaitingEnded(TimerType.QUIZ)){
             return
         }
 

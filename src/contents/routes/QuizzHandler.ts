@@ -5,6 +5,7 @@ import {MultipleResponse} from "~contents/question/MultipleResponse";
 import {DragAndDrop} from "~contents/question/DragAndDrop";
 import {ToeicMultipleResponse} from "~contents/question/ToeicMultipleResponse";
 import {ToeicInterstitial} from "~contents/question/ToeicInterstitial";
+import {TimerType, timeService} from "~contents/services/TimerService";
 
 
 export class QuizzHandler implements RouteHandlerInterface {
@@ -30,6 +31,9 @@ export class QuizzHandler implements RouteHandlerInterface {
         const handler = QuizzHandler.listQuestion.find(elem => elem.isDetected())
         if (handler == undefined) {
             console.log("❓ Question type not found")
+            return
+        }
+        if(!await timeService.isWaitingEnded(TimerType.QUESTION)){
             return
         }
         await handler.handler()

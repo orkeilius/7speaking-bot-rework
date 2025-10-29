@@ -1,14 +1,15 @@
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
 
-export class TimeUtils {
+class TimeUtils {
 
     // 20 minutes
-    static readonly defaultTiming = 60 * 1000 * 20;
+    static readonly defaultTimerQuiz = 60 * 1000 * 20;
+    static readonly defaultTimerQuestion = 45 * 1000;
 
-    async isWaitingEnded() {
+    async isWaitingEnded(timerType: TimerType) {
         if(document.location.href !== await storageService.get(StorageKeys.TIMER_URL)){
-            await this.createTimer()
+            await this.createTimer(timerType)
             return false
         }
 
@@ -21,9 +22,10 @@ export class TimeUtils {
         return true
     }
 
-    async createTimer(){
-        let time = await storageService.get<number>(StorageKeys.CUSTOM_TIMER)
-        if(await storageService.get<boolean>(StorageKeys.USE_RECOMMENDED_TIME)){
+    async createTimer(timerType:TimerType){
+        let time = await storageService.get<number>(timerType == TimerType.QUIZ ? StorageKeys.CUSTOM_TIMER_QUIZ : StorageKeys.CUSTOM_TIMER_QUESTION)
+
+        if(timerType == TimerType.QUIZ && await storageService.get<boolean>(StorageKeys.USE_RECOMMENDED_TIME)){
             time = await this.findRealTime()
         }
         const newTime = Date.now() + (time * (Math.random() + 0.5))
@@ -48,8 +50,12 @@ export class TimeUtils {
                     return  value * 60 * 60 * 1000
             }
         }
-        return TimeUtils.defaultTiming
+        return TimeUtils.defaultTimerQuiz
     }
-
-
 }
+export enum TimerType{
+    QUIZ,
+    QUESTION
+}
+
+export const timeService = new TimeUtils();

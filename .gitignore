@@ -36,3 +36,4 @@ extension-env.d.ts
 
 #custom
 .idea
+*.pem
