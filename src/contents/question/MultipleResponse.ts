@@ -1,5 +1,5 @@
-import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {QuestionInterface} from "~contents/question/QuestionInterface";
+import GetAnswer from "~contents/mainWorldClient/mainWorldFunction/GetAnswer";
 
 export class MultipleResponse extends QuestionInterface<string> {
     isDetected(): boolean {
@@ -14,7 +14,7 @@ export class MultipleResponse extends QuestionInterface<string> {
     }
 
     async getGoodAnswer(): Promise<string> {
-        return await mainWorldHostService.getReactAnswer();
+        return await new GetAnswer().callFunction();
     }
 
     async getBadAnswer(): Promise<string> {

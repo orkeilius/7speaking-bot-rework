@@ -1,6 +1,6 @@
-import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {realistInput} from "~contents/utils/InputUtils";
 import {QuestionInterface} from "~contents/question/QuestionInterface";
+import GetAnswer from "~contents/mainWorldClient/mainWorldFunction/GetAnswer";
 
 export class TextInput extends QuestionInterface<string> {
       isDetected(): boolean {
@@ -15,7 +15,7 @@ export class TextInput extends QuestionInterface<string> {
     }
 
     async getGoodAnswer(): Promise<string> {
-        return await mainWorldHostService.getReactAnswer();
+        return await new GetAnswer().callFunction();
     }
 
     async getBadAnswer(): Promise<string> {

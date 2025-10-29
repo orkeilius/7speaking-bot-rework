@@ -1,5 +1,5 @@
-import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {QuestionInterface} from "~contents/question/QuestionInterface";
+import GetAnswerToeic from "~contents/mainWorldClient/mainWorldFunction/GetAnswerToeic";
 
 export class ToeicMultipleResponse extends QuestionInterface<string> {
     isDetected(): boolean {
@@ -15,7 +15,7 @@ export class ToeicMultipleResponse extends QuestionInterface<string> {
     }
 
     async getGoodAnswer(): Promise<string> {
-        let errorResponse = await mainWorldHostService.getReactToeicAnswer();
+        let errorResponse = await new GetAnswerToeic().callFunction();
         return errorResponse.split(" ").at(-1).trim()
     }
 

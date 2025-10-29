@@ -1,6 +1,7 @@
-import {mainWorldHostService} from "~contents/services/MainWorldHostService";
 import {QuestionInterface} from "~contents/question/QuestionInterface";
 import type DragAndDropAnswer from "~types/DragAndDropAnswer";
+import GetAnswerDragAndDrop from "~contents/mainWorldClient/mainWorldFunction/GetAnswerDragAndDrop";
+import ExecuteDragAndDrop from "~contents/mainWorldClient/mainWorldFunction/ExecuteDragAndDrop";
 
 export class DragAndDrop extends QuestionInterface<DragAndDropAnswer[]> {
     isDetected(): boolean {
@@ -16,7 +17,7 @@ export class DragAndDrop extends QuestionInterface<DragAndDropAnswer[]> {
 
 
     async getGoodAnswer(): Promise<DragAndDropAnswer[]> {
-        const raw = await mainWorldHostService.getReactAnswerDragDrop();
+        const raw = await new GetAnswerDragAndDrop().callFunction();
         return raw.options.map(rawItem => ({dragId: rawItem.id, dropzoneId: rawItem.id}));
     }
     async getBadAnswer(): Promise<DragAndDropAnswer[]> {
@@ -33,7 +34,7 @@ export class DragAndDrop extends QuestionInterface<DragAndDropAnswer[]> {
 
     async executeAnswer(answers: DragAndDropAnswer[]): Promise<void> {
         for (const elem of answers) {
-            await mainWorldHostService.executeDragAndDrop(elem.dragId, elem.dropzoneId);
+            await new ExecuteDragAndDrop().callFunction(elem);
             await new Promise(resolve => setTimeout(resolve, 100));
         }
     }
