@@ -25,6 +25,10 @@
         {
           "version": "0.9.3",
           "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/0.9.3/7speaking-bot-rework_firefox-0.9.3.xpi"
+        },
+        {
+          "version": "0.9.4",
+          "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/0.9.4/7speaking-bot-rework_firefox-0.9.4.xpi"
         }
       ]
     }
