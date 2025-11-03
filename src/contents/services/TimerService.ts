@@ -5,7 +5,7 @@ class TimeUtils {
 
     // 20 minutes
     static readonly defaultTimerQuiz = 60 * 1000 * 20;
-    static readonly defaultTimerQuestion = 45 * 1000;
+    static readonly defaultTimerQuestion = 30 * 1000;
 
     async isWaitingEnded(timerType: TimerType) {
         if(document.location.href !== await storageService.get(StorageKeys.TIMER_URL)){
