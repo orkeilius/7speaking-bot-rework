@@ -10,5 +10,6 @@ export class Constants {
     static readonly VocabularyQuizSelector = "div:is([class$=_girdMode_container],[class$=_listMode__container]) > button.cardMode__goToQuiz"
     static readonly VocabularyQuizSheetSelector = "button.sheet__quizButton"
     static readonly QuizTabSelector = "div.appBarTabs__testTab"
-    static readonly QuizValidateSelector = ".question__btns__container button[type=submit]"
+    static readonly QuizValidateSelector = ".question__btns__container button[type=submit]:not([disabled])"
+    static readonly ToeicQuizNextSelector = "div.buttons_container button[class*='MuiButton-containedPrimary']"
 }

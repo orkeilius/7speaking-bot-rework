@@ -1,5 +1,7 @@
 import {QuestionInterface} from "~contents/question/QuestionInterface";
 import GetAnswerToeic from "~contents/mainWorldClient/mainWorldFunction/GetAnswerToeic";
+import {waitForSelector} from "~contents/utils/InputUtils";
+import {Constants} from "~contents/utils/Constants";
 
 export class ToeicMultipleResponse extends QuestionInterface<string> {
     isDetected(): boolean {
@@ -15,7 +17,7 @@ export class ToeicMultipleResponse extends QuestionInterface<string> {
     }
 
     async getGoodAnswer(): Promise<string> {
-        let errorResponse = await new GetAnswerToeic().callFunction();
+        const errorResponse = await new GetAnswerToeic().callFunction();
         return errorResponse.split(" ").at(-1).trim()
     }
 
@@ -32,21 +34,21 @@ export class ToeicMultipleResponse extends QuestionInterface<string> {
     }
 
     async executeSubmit(): Promise<void> {
-        const submitButton = document.querySelector<HTMLInputElement>("div.buttons_container button[class*='MuiButton-containedPrimary']");
+        const submitButton = document.querySelector<HTMLInputElement>(Constants.ToeicQuizNextSelector);
         submitButton?.click();
-        //small delay to allow react to re-render
-        await new Promise(r => setTimeout(r, 500));
 
-        const btnNext: HTMLElement = document.querySelector("div.buttons_container button[class*='MuiButton-containedPrimary']");
+        await waitForSelector(Constants.ToeicQuizNextSelector)
+
+        const btnNext: HTMLElement = document.querySelector(Constants.ToeicQuizNextSelector);
         btnNext?.click();
 
     }
 
     getButtons(): { label: string, input: HTMLElement }[] {
         return Array.from(document.querySelectorAll<HTMLElement>("div.choice_variant input[type=radio]")).map(
-            (input) => {
-                let label = input.closest("label.MuiFormControlLabel-root").querySelector(".MuiFormControlLabel-label").innerHTML
-                return {label: label, input: input}
+            input => {
+                const label = input.closest("label.MuiFormControlLabel-root").querySelector(".MuiFormControlLabel-label").innerHTML
+                return {label, input}
             }
         );
     }

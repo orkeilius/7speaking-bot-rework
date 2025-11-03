@@ -1,6 +1,7 @@
 import {Constants} from "~contents/utils/Constants";
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
+import {waitForSelector} from "~contents/utils/InputUtils";
 
 export abstract class QuestionInterface<T> {
     abstract isDetected() :boolean;
@@ -13,11 +14,12 @@ export abstract class QuestionInterface<T> {
     protected abstract getBadText() : string;
 
     async executeSubmit(): Promise<void> {
+
+        await waitForSelector(Constants.QuizValidateSelector);
         const btnContainer : HTMLElement = document.querySelector(Constants.QuizValidateSelector);
         btnContainer?.click();
-        /// wait for react re-render
-        await new Promise(r => setTimeout(r, 500));
 
+        await waitForSelector(Constants.QuizValidateSelector);
         const btnNext : HTMLElement = document.querySelector(Constants.QuizValidateSelector);
         btnNext?.click();
     }
