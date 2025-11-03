@@ -57,12 +57,13 @@ export class StorageKeys {
         async ()=> await storageService.get<number>(StorageKeys.STAT_QUIZ_DONE) + 1
     );
     public static readonly STAT_TIME_USE = new StorageKeys("statTimeUse", 0,async ()=>{
-        let diff = Date.now() - await storageService.get<number>(StorageKeys.LAST_TIME_RUN)
+        const diff = Date.now() - await storageService.get<number>(StorageKeys.LAST_TIME_RUN)
+        const previous = await storageService.get<number>(StorageKeys.STAT_TIME_USE)
         if(diff >= Constants.maxTimeUseDiffTooLong){
             console.warn("skip")
-            return 0
+            return previous;
         }
-        return await storageService.get<number>(StorageKeys.STAT_TIME_USE) + diff;
+        return previous + diff;
     }
     );
     public static readonly LAST_QUIZ_COMPLETED = new StorageKeys("lastQuizCompleted", "");
