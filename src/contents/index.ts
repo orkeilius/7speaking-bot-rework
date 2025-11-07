@@ -17,6 +17,13 @@ const routesHandler: RouteHandlerInterface[] = [new QuizzHandler(),new HomeHandl
 
 class Bot {
 
+    uniqueContentScriptId : string = null
+
+    setup() {
+        this.uniqueContentScriptId = crypto.randomUUID()
+        storageService.set(StorageKeys.LAST_CONTENT_SCRIPT_ID, this.uniqueContentScriptId)
+    }
+
     async loop() {
         try {
             await this.main()
@@ -30,8 +37,16 @@ class Bot {
         await this.updateLastTime()
         const active = await storageService.get(StorageKeys.ACTIVE);
 
-        const route = routesHandler.find(handler => handler.isDetected());
+        if(await storageService.get<string>(StorageKeys.LAST_CONTENT_SCRIPT_ID) !== this.uniqueContentScriptId){
+            console.log(await storageService.get(StorageKeys.LAST_CONTENT_SCRIPT_ID))
+            const overtake = globalThis.confirm("Another instance of the bot is running. Close this tab or take over the bot in this tab.")
+            if (!overtake){
+                return
+            }
+            await storageService.set(StorageKeys.LAST_CONTENT_SCRIPT_ID,this.uniqueContentScriptId)
+        }
 
+        const route = routesHandler.find(handler => handler.isDetected());
         if (route === undefined) {
             logMessage("🟡 page unknown")
             return
@@ -57,4 +72,5 @@ class Bot {
 console.log("Bot started")
 const bot = new Bot()
 
+bot.setup()
 bot.loop()

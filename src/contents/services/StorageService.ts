@@ -54,6 +54,7 @@ export class StorageKeys {
     public static readonly SHOW_OVERLAY = new StorageKeys("showOverlay", true)
     public static readonly LAST_TIME_RUN = new StorageKeys("lastTimeRun", 0,Date.now);
     public static readonly LAST_TIME = new StorageKeys("lastTime", 0,Date.now);
+    public static readonly LAST_CONTENT_SCRIPT_ID = new StorageKeys("lastContentScriptId", "");
     public static readonly STAT_QUESTION_DONE = new StorageKeys("statQuestionDone", 0,
         async ()=> await storageService.get<number>(StorageKeys.STAT_QUESTION_DONE) + 1
     );
