@@ -5,7 +5,6 @@ import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
-import {Constants} from "~contents/utils/Constants";
 import {updateService} from "~contents/services/UpdateService";
 
 export const config: PlasmoCSConfig = {
@@ -22,6 +21,7 @@ class Bot {
     setup() {
         this.uniqueContentScriptId = crypto.randomUUID()
         storageService.set(StorageKeys.LAST_CONTENT_SCRIPT_ID, this.uniqueContentScriptId)
+        storageService.set(StorageKeys.ACTIVE, false)
     }
 
     async loop() {
@@ -61,10 +61,6 @@ class Bot {
     }
 
     async updateLastTime() {
-        const delai = Date.now() - await storageService.get<number>(StorageKeys.LAST_TIME)
-        if (delai > Constants.maxTimeUseDiffTooLong)  {
-            await storageService.set(StorageKeys.ACTIVE,false)
-        }
         await storageService.update(StorageKeys.LAST_TIME)
     }
 }
