@@ -1,5 +1,5 @@
 import "../style.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
 import Settings from "~popup/component/Settings";
 import {FaRegCirclePlay, FaRegCirclePause} from "react-icons/fa6";
@@ -19,17 +19,10 @@ export default function IndexPopup() {
 
     }
 
-    async function fetchSettings() {
-        setActive(await storageService.get(StorageKeys.ACTIVE));
-        setIsUpdateAvailable(await updateService.getUpdateAvailable())
-        console.log(await updateService.getUpdateAvailable());
-    }
-
-    setInterval(() => {
-        fetchSettings();
-    }, 1000);
-    fetchSettings()
-
+    useEffect(() => {
+        storageService.subscribe<boolean>(StorageKeys.ACTIVE,setActive)
+        updateService.getUpdateAvailable().then(setIsUpdateAvailable);
+    },[]);
 
     return (
         <div className="w-64 bg-bg-1 text-color-text font-sans flex flex-col items-center text-xs">

@@ -22,19 +22,11 @@ const Overlay = () => {
     const [text, setText] = useState<string>("⏱️ waiting...");
     const [visible, setVisible] = useState<boolean>(true);
 
-    const updateValue = async () => {
-        setText(await storageService.get(StorageKeys.LOG));
-        setActive(await storageService.get(StorageKeys.ACTIVE));
-        setVisible(await storageService.get(StorageKeys.SHOW_OVERLAY));
-    };
-
     useEffect(() => {
-        updateValue();
-        const i = setInterval(updateValue, 100);
-        return () => {
-            clearInterval(i)
-        };
-    });
+        storageService.subscribe<string>(StorageKeys.LOG,setText)
+        storageService.subscribe<boolean>(StorageKeys.ACTIVE,setActive)
+        storageService.subscribe<boolean>(StorageKeys.SHOW_OVERLAY,setVisible)
+    },[]);
 
     const toggleActive = async () => {
         await storageService.set(StorageKeys.ACTIVE,!active);

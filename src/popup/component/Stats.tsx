@@ -9,13 +9,11 @@ export default function Stats(){
     const [timeSpend, setTimeSpend] = useState(0);
 
     useEffect(() => {
-        async function fetchSettings() {
-            setNbQuestionDone(await storageService.get(StorageKeys.STAT_QUESTION_DONE));
-            setNbQuizDone(await storageService.get(StorageKeys.STAT_QUIZ_DONE));
-            setTimeSpend(await storageService.get(StorageKeys.STAT_TIME_USE));
-        }
-        fetchSettings();
-    }, []);
+        storageService.subscribe<number>(StorageKeys.STAT_QUESTION_DONE, setNbQuestionDone);
+        storageService.subscribe<number>(StorageKeys.STAT_QUIZ_DONE, setNbQuizDone);
+        storageService.subscribe<number>(StorageKeys.STAT_TIME_USE, setTimeSpend);
+    },[]);
+
 
     return(
         <div className="m-2 bg-bg-2 rounded-xl p-2 w-4/5">

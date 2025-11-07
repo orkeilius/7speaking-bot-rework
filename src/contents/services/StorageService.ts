@@ -18,6 +18,10 @@ class StorageService {
         return result as T;
     }
 
+    public subscribe<T>(key: StorageKeys, callback: (newValue: T) => void): void {
+        this.storage.watch({[key.key]: ({newValue}) => (callback(newValue as T))});
+        this.get(key).then(callback);
+    }
     public async set<T>(key: StorageKeys,value:T): Promise<void> {
         if(key.customSetter){
             throw new TypeError(`Use custom setter for key ${key.key} use update() instead.`);
