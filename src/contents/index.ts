@@ -5,7 +5,6 @@ import {QuizzHandler} from "~contents/routes/QuizzHandler";
 import type { PlasmoCSConfig } from "plasmo"
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
-import {Constants} from "~contents/utils/Constants";
 import {updateService} from "~contents/services/UpdateService";
 
 export const config: PlasmoCSConfig = {
@@ -16,6 +15,14 @@ export const config: PlasmoCSConfig = {
 const routesHandler: RouteHandlerInterface[] = [new QuizzHandler(),new HomeHandler(), new BeginnerWorkshopHandler(),new LearningHandler()];
 
 class Bot {
+
+    uniqueContentScriptId : string = null
+
+    setup() {
+        this.uniqueContentScriptId = crypto.randomUUID()
+        storageService.set(StorageKeys.LAST_CONTENT_SCRIPT_ID, this.uniqueContentScriptId)
+        storageService.set(StorageKeys.ACTIVE, false)
+    }
 
     async loop() {
         try {
@@ -30,8 +37,15 @@ class Bot {
         await this.updateLastTime()
         const active = await storageService.get(StorageKeys.ACTIVE);
 
-        const route = routesHandler.find(handler => handler.isDetected());
+        if(await storageService.get<string>(StorageKeys.LAST_CONTENT_SCRIPT_ID) !== this.uniqueContentScriptId){
+            const overtake = globalThis.confirm("Another instance of the bot is running. Close this tab or take over the bot in this tab.")
+            if (!overtake){
+                return
+            }
+            await storageService.set(StorageKeys.LAST_CONTENT_SCRIPT_ID,this.uniqueContentScriptId)
+        }
 
+        const route = routesHandler.find(handler => handler.isDetected());
         if (route === undefined) {
             logMessage("🟡 page unknown")
             return
@@ -46,10 +60,6 @@ class Bot {
     }
 
     async updateLastTime() {
-        const delai = Date.now() - await storageService.get<number>(StorageKeys.LAST_TIME)
-        if (delai > Constants.maxTimeUseDiffTooLong)  {
-            await storageService.set(StorageKeys.ACTIVE,false)
-        }
         await storageService.update(StorageKeys.LAST_TIME)
     }
 }
@@ -57,4 +67,5 @@ class Bot {
 console.log("Bot started")
 const bot = new Bot()
 
+bot.setup()
 bot.loop()

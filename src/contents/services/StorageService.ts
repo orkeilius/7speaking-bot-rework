@@ -18,6 +18,13 @@ class StorageService {
         return result as T;
     }
 
+    public subscribe<T>(key: StorageKeys, callback: (newValue: T) => void): () => void {
+        const watcher = {[key.key]: ({newValue}) => (callback(newValue as T))}
+        this.storage.watch(watcher);
+        this.get(key).then(callback);
+
+        return () => this.storage.unwatch(watcher);
+    }
     public async set<T>(key: StorageKeys,value:T): Promise<void> {
         if(key.customSetter){
             throw new TypeError(`Use custom setter for key ${key.key} use update() instead.`);
@@ -50,6 +57,7 @@ export class StorageKeys {
     public static readonly SHOW_OVERLAY = new StorageKeys("showOverlay", true)
     public static readonly LAST_TIME_RUN = new StorageKeys("lastTimeRun", 0,Date.now);
     public static readonly LAST_TIME = new StorageKeys("lastTime", 0,Date.now);
+    public static readonly LAST_CONTENT_SCRIPT_ID = new StorageKeys("lastContentScriptId", "");
     public static readonly STAT_QUESTION_DONE = new StorageKeys("statQuestionDone", 0,
         async ()=> await storageService.get<number>(StorageKeys.STAT_QUESTION_DONE) + 1
     );
