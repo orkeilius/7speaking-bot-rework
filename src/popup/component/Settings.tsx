@@ -34,12 +34,15 @@ export default function Settings() {
     }
 
     useEffect(() => {
-        storageService.subscribe<boolean>(StorageKeys.SHOW_OVERLAY, setShowOverlay);
-        storageService.subscribe<number>(StorageKeys.ERROR_PROBABILITY,  (v :number) => setErrorProbability(v * 100));
-        storageService.subscribe<boolean>(StorageKeys.USE_RECOMMENDED_TIME, setUseRealtime);
-        storageService.subscribe<number>(StorageKeys.CUSTOM_TIMER_QUIZ,  (v :number) => setCustomTimerQuiz(v / 1000 / 60));
-        storageService.subscribe<number>(StorageKeys.CUSTOM_TIMER_QUESTION,  (v :number) => setCustomTimerQuestion(v / 1000));
-    },[]);
+        const watchers = [
+            storageService.subscribe<boolean>(StorageKeys.SHOW_OVERLAY, setShowOverlay),
+            storageService.subscribe<number>(StorageKeys.ERROR_PROBABILITY, (v: number) => setErrorProbability(v * 100)),
+            storageService.subscribe<boolean>(StorageKeys.USE_RECOMMENDED_TIME, setUseRealtime),
+            storageService.subscribe<number>(StorageKeys.CUSTOM_TIMER_QUIZ, (v: number) => setCustomTimerQuiz(v / 1000 / 60)),
+            storageService.subscribe<number>(StorageKeys.CUSTOM_TIMER_QUESTION, (v: number) => setCustomTimerQuestion(v / 1000))
+        ];
+        return () => watchers.forEach(unsubscribe => unsubscribe())
+    }, []);
 
     return (
         <div className="m-2 bg-bg-2 rounded-xl p-2 w-4/5">

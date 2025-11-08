@@ -18,9 +18,12 @@ class StorageService {
         return result as T;
     }
 
-    public subscribe<T>(key: StorageKeys, callback: (newValue: T) => void): void {
-        this.storage.watch({[key.key]: ({newValue}) => (callback(newValue as T))});
+    public subscribe<T>(key: StorageKeys, callback: (newValue: T) => void): () => void {
+        const watcher = {[key.key]: ({newValue}) => (callback(newValue as T))}
+        this.storage.watch(watcher);
         this.get(key).then(callback);
+
+        return () => this.storage.unwatch(watcher);
     }
     public async set<T>(key: StorageKeys,value:T): Promise<void> {
         if(key.customSetter){

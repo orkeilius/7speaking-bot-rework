@@ -38,7 +38,6 @@ class Bot {
         const active = await storageService.get(StorageKeys.ACTIVE);
 
         if(await storageService.get<string>(StorageKeys.LAST_CONTENT_SCRIPT_ID) !== this.uniqueContentScriptId){
-            console.log(await storageService.get(StorageKeys.LAST_CONTENT_SCRIPT_ID))
             const overtake = globalThis.confirm("Another instance of the bot is running. Close this tab or take over the bot in this tab.")
             if (!overtake){
                 return

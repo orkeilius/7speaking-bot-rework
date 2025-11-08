@@ -23,9 +23,12 @@ const Overlay = () => {
     const [visible, setVisible] = useState<boolean>(true);
 
     useEffect(() => {
-        storageService.subscribe<string>(StorageKeys.LOG,setText)
-        storageService.subscribe<boolean>(StorageKeys.ACTIVE,setActive)
-        storageService.subscribe<boolean>(StorageKeys.SHOW_OVERLAY,setVisible)
+        const watchers = [
+            storageService.subscribe<string>(StorageKeys.LOG,setText),
+            storageService.subscribe<boolean>(StorageKeys.ACTIVE,setActive),
+            storageService.subscribe<boolean>(StorageKeys.SHOW_OVERLAY,setVisible)
+        ];
+        return () => watchers.forEach(unsubscribe => unsubscribe())
     },[]);
 
     const toggleActive = async () => {

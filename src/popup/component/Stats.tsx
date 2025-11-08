@@ -9,9 +9,12 @@ export default function Stats(){
     const [timeSpend, setTimeSpend] = useState(0);
 
     useEffect(() => {
-        storageService.subscribe<number>(StorageKeys.STAT_QUESTION_DONE, setNbQuestionDone);
-        storageService.subscribe<number>(StorageKeys.STAT_QUIZ_DONE, setNbQuizDone);
-        storageService.subscribe<number>(StorageKeys.STAT_TIME_USE, setTimeSpend);
+        const watchers = [
+            storageService.subscribe<number>(StorageKeys.STAT_QUESTION_DONE, setNbQuestionDone),
+            storageService.subscribe<number>(StorageKeys.STAT_QUIZ_DONE, setNbQuizDone),
+            storageService.subscribe<number>(StorageKeys.STAT_TIME_USE, setTimeSpend)
+        ];
+        return () => watchers.forEach(unsubscribe => unsubscribe())
     },[]);
 
 
