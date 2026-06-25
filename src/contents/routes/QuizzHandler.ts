@@ -1,10 +1,10 @@
 import type {QuestionInterface} from "~contents/question/QuestionInterface";
-import {TextInput} from "~contents/question/TextInput";
-import {EndScreen} from "~contents/question/EndScreen";
-import {MultipleResponse} from "~contents/question/MultipleResponse";
-import {DragAndDrop} from "~contents/question/DragAndDrop";
-import {ToeicMultipleResponse} from "~contents/question/ToeicMultipleResponse";
-import {ToeicInterstitial} from "~contents/question/ToeicInterstitial";
+import {TextInput} from "~contents/question/7speaking/TextInput";
+import {EndScreen} from "~contents/question/7speaking/EndScreen";
+import {MultipleResponse} from "~contents/question/7speaking/MultipleResponse";
+import {DragAndDrop} from "~contents/question/7speaking/DragAndDrop";
+import {ToeicMultipleResponse} from "~contents/question/7speaking/ToeicMultipleResponse";
+import {ToeicInterstitial} from "~contents/question/7speaking/ToeicInterstitial";
 import {TimerType, timeService} from "~contents/services/TimerService";
 import {logMessage} from "~contents/utils/Logging";
 
