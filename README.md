@@ -35,3 +35,6 @@ yarn install
 
 yarn run dev
 ```
+## Final note
+
+![CI/CD](./docs/assets/cicd-exemple.gif)
