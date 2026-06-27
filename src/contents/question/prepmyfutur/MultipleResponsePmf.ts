@@ -1,7 +1,5 @@
 import { QuestionInterface } from "~contents/question/QuestionInterface";
 import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService";
-import { Constants } from "~contents/utils/Constants";
-import { waitForSelector } from "~contents/utils/InputUtils";
 
 
 
@@ -44,17 +42,12 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
 
     const questionId = target.id.replace("content_question_", "")
 
-    const goodAnswer = await prepmyfuturAnwserService.getAnwsers(
-      questionId,
-      activityId
-    )
-    return goodAnswer
+    return await prepmyfuturAnwserService.getAnwsers(questionId, activityId)
   }
 
   async getBadAnswer(): Promise<number> {
-    const answer = await this.getGoodAnswer()
     //TODO : implement bad answer
-    return answer
+    return await this.getGoodAnswer()
   }
 
   async executeAnswer(answer: number): Promise<void> {
@@ -66,28 +59,24 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
       throw new Error("Could not find active question target to execute answer")
     }
 
-    const button =
-      target.querySelectorAll<HTMLButtonElement>("span.answer-label")
-
-    if (button) {
-      button[answer].click()
-    } else {
-      console.error(`Could not find answer button containing: ${answer}`)
-    }
+    target
+      .querySelector<HTMLButtonElement>(`[for$=-answer-${answer + 1}] .radio`)
+      .click()
   }
 
   async executeSubmit(): Promise<void> {
-
     const questions = document.querySelectorAll("[id^=content_question_]")
 
     const isEveryQuestionIsAnwsered = questions
       .values()
       .every((x) => x.querySelector(".checked") != null)
     if (!isEveryQuestionIsAnwsered) {
-      return;
+      return
     }
 
-    const submitButton = document.querySelector<HTMLButtonElement>("input[type='submit']")
+    const submitButton = document.querySelector<HTMLButtonElement>(
+      "input[type='submit']"
+    )
     submitButton.click()
   }
 }
