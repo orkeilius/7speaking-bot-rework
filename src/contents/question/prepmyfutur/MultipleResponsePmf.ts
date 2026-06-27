@@ -1,11 +1,13 @@
 import { QuestionInterface } from "~contents/question/QuestionInterface";
-import { prepmyfuturAnwserService, type Answer } from "~contents/services/PrepmyfuturAnwserService";
+import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService";
+import { Constants } from "~contents/utils/Constants";
+import { waitForSelector } from "~contents/utils/InputUtils";
 
 
 
 
 
-export class MultipleResponsePmf extends QuestionInterface<string> {
+export class MultipleResponsePmf extends QuestionInterface<number> {
   isDetected(): boolean {
     return (
       document.querySelector<HTMLInputElement>(
@@ -21,7 +23,7 @@ export class MultipleResponsePmf extends QuestionInterface<string> {
     return "📝 Tapping on the screen"
   }
 
-  async getGoodAnswer(): Promise<string> {
+  async getGoodAnswer(): Promise<number> {
     const params = new URLSearchParams(globalThis.location.search)
     const exerciseId = params.get("user_exercise_id") ?? params.get("id")
     if (!exerciseId) {
@@ -35,50 +37,57 @@ export class MultipleResponsePmf extends QuestionInterface<string> {
     const target = questions
       .values()
       .find((x) => x.querySelector(".checked") == null)
-    const buttons = Array.from(
-      target.querySelectorAll<HTMLButtonElement>("span.answer-label")
-    )
 
-    const proposedAnswers = buttons.map((btn) => {
-      const answerText = btn
-        .querySelectorAll("span")
-        .values()
-        .filter((x) => !x.classList.contains("script"))
-        .map((x) => x.textContent)
-        .toArray()
+    if (!target) {
+      throw new Error("Could not find active question target")
+    }
 
-      if (answerText.length != 2) {
-        console.error(answerText)
-        throw new Error("Error while parsing answer")
-      }
-
-      return { label: answerText[0], text: answerText[1] } as Answer
-    })
-
-    console.log(proposedAnswers)
+    const questionId = target.id.replace("content_question_", "")
 
     const goodAnswer = await prepmyfuturAnwserService.getAnwsers(
-      proposedAnswers,
+      questionId,
       activityId
     )
-    if (!goodAnswer) {
-      throw new Error("Could not find matching correct answer from solutions")
-    }
     return goodAnswer
   }
 
-  async getBadAnswer(): Promise<string> {
+  async getBadAnswer(): Promise<number> {
     const answer = await this.getGoodAnswer()
+    //TODO : implement bad answer
     return answer
   }
 
-  async executeAnswer(answer: string): Promise<void> {
-    document
-      .querySelectorAll<HTMLButtonElement>("span.answer-label")
+  async executeAnswer(answer: number): Promise<void> {
+    const questions = document.querySelectorAll("[id^=content_question_]")
+    const target = questions
       .values()
-      .find((x) => x.textContent.includes(answer))
-      .click()
-    //const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".answer-container > button"));
-    //buttons.find(btn => btn.children.item(0).innerHTML.trim() === answer.trim())?.click();
+      .find((x) => x.querySelector(".checked") == null)
+    if (!target) {
+      throw new Error("Could not find active question target to execute answer")
+    }
+
+    const button =
+      target.querySelectorAll<HTMLButtonElement>("span.answer-label")
+
+    if (button) {
+      button[answer].click()
+    } else {
+      console.error(`Could not find answer button containing: ${answer}`)
+    }
+  }
+
+  async executeSubmit(): Promise<void> {
+
+    const questions = document.querySelectorAll("[id^=content_question_]")
+
+    const isEveryQuestionIsAnwsered = questions
+      .values()
+      .every((x) => x.querySelector(".checked") != null)
+    if (!isEveryQuestionIsAnwsered) {
+      return;
+    }
+
+    const submitButton = document.querySelector<HTMLButtonElement>("input[type='submit']")
+    submitButton.click()
   }
 }
