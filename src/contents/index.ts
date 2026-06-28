@@ -11,6 +11,7 @@ import { Constants } from "~contents/utils/Constants"
 import { logMessage } from "~contents/utils/Logging"
 import { LearningHandlerPmf } from "~contents/routes/prepmyfutur/LearningHandlerPmf"
 import { QuizzAccessHandlerPmf } from "~contents/routes/prepmyfutur/QuizzAccessHandlerPmf"
+import { QuizzResultHandlerPmf } from "~contents/routes/prepmyfutur/QuizzResultHandlerPmf"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://user.7speaking.com/*", "https://prepmyfuture.com/*"],
@@ -22,9 +23,9 @@ const routesHandler: RouteHandlerInterface[] = [
   new HomeHandler(),
   new BeginnerWorkshopHandler(),
   new LearningHandler7s(),
-  new LearningHandlerPmf()
   new LearningHandlerPmf(),
   new QuizzAccessHandlerPmf(),
+  new QuizzResultHandlerPmf()
 ]
 
 class Bot {

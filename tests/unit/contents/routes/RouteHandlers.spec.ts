@@ -4,6 +4,7 @@ import {BeginnerWorkshopHandler} from '~contents/routes/7speaking/BeginnerWorksh
 import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
 import {LearningHandlerPmf} from '~contents/routes/prepmyfutur/LearningHandlerPmf';
 import {QuizzAccessHandlerPmf} from '~contents/routes/prepmyfutur/QuizzAccessHandlerPmf';
+import {QuizzResultHandlerPmf} from '~contents/routes/prepmyfutur/QuizzResultHandlerPmf';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
 import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
@@ -292,6 +293,35 @@ describe('Route Handlers', () => {
             expect(logMessage).toHaveBeenCalledWith('😓 already done ...');
         });
     });
+
+    describe('QuizzResultHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/exercise_results.*', () => {
+            const handler = new QuizzResultHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/exercise_results');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/exercise_results/summary');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler clicks button', async () => {
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new QuizzResultHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('💡 In to the next one');
+        });
+    });
+
     describe('QuizzHandler', () => {
         test('isDetected returns true if route matches /quiz or question handler is detected', () => {
             const handler = new QuizzHandler();
