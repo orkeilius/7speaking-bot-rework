@@ -1,4 +1,5 @@
 import { mockStorageInstance } from '../../../helpers/mockStorage';
+import { StorageKeys, storageService } from '~contents/services/StorageService';
 import { MultipleResponsePmf } from '~contents/question/prepmyfutur/MultipleResponsePmf';
 import { prepmyfuturAnwserService } from '~contents/services/PrepmyfuturAnwserService';
 
@@ -149,6 +150,7 @@ describe('MultipleResponsePmf', () => {
 
             await handler.executeSubmit();
             expect(clickSpy).toHaveBeenCalled();
+            expect(await storageService.get(StorageKeys.STAT_QUIZ_DONE)).toBe(1);
         });
     });
 });

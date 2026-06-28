@@ -1,5 +1,6 @@
 import { QuestionInterface } from "~contents/question/QuestionInterface";
 import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService";
+import { StorageKeys, storageService } from "~contents/services/StorageService";
 
 
 
@@ -67,6 +68,7 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
       return
     }
 
+    await storageService.update(StorageKeys.STAT_QUIZ_DONE)
     document.querySelector<HTMLButtonElement>(
       "input[type='submit']"
     ).click()
