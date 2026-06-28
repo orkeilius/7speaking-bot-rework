@@ -1,9 +1,5 @@
 import { Storage } from "@plasmohq/storage";
 
-
-
-
-
 const StoragePrefix = "pmf-responce-cache-"
 const ResponseUrl =
   "https://prepmyfuture.com/platform/exercises/load_user_exercise_solutions?"
@@ -27,8 +23,6 @@ class PrepmyfuturAnwserService {
       responsePage = (await this.storage.get(cacheKey)) as ResponsePage
     }
 
-    console.log(responsePage)
-
     return this.findAnwsersInResponcePage(responsePage, questionId)
   }
 
@@ -44,7 +38,6 @@ class PrepmyfuturAnwserService {
       console.error(questionId,responsePage)
       throw new Error("Match question id not found")
     }
-    console.log("found")
     return matchingQuestion?.correct
   }
 
@@ -84,7 +77,6 @@ class PrepmyfuturAnwserService {
     }
 
     const cacheKey = StoragePrefix + activityId
-    console.log(responsePage)
     await this.storage.set(cacheKey, responsePage)
   }
 }

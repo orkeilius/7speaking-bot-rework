@@ -37,7 +37,7 @@ export abstract class QuestionInterface<T> {
 
             await storageService.update(StorageKeys.STAT_QUESTION_DONE);
         } catch (error) {
-            await logMessage(`⚠️ Error executing good answer, (${error})`);
+            await logMessage(`⚠️ Error executing answer, (${error})`);
         }
     };
 

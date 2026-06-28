@@ -1,9 +1,5 @@
-import { QuestionInterface } from "~contents/question/QuestionInterface";
-import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService";
-
-
-
-
+import { QuestionInterface } from "~contents/question/QuestionInterface"
+import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService"
 
 export class MultipleResponsePmf extends QuestionInterface<number> {
   isDetected(): boolean {
@@ -29,14 +25,9 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
     }
     const activityId = Number.parseInt(exerciseId, 10)
 
-    const questions = document.querySelectorAll("[id^=content_question_]")
+    const target = this.getTargetedQuestion()
 
-    console.debug(questions)
-    const target = questions
-      .values()
-      .find((x) => x.querySelector(".checked") == null)
-
-    if (!target) {
+    if (target == null) {
       throw new Error("Could not find active question target")
     }
 
@@ -46,16 +37,18 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
   }
 
   async getBadAnswer(): Promise<number> {
-    //TODO : implement bad answer
-    return await this.getGoodAnswer()
+    const nbAnwser =
+      this.getTargetedQuestion().querySelectorAll(".radio").length
+    const goodAnswer = await this.getGoodAnswer()
+
+    return [...new Array(nbAnwser - 1).keys()].filter((x) => x !== goodAnswer)[
+      Math.floor(Math.random() * (nbAnwser - 2))
+    ]
   }
 
   async executeAnswer(answer: number): Promise<void> {
-    const questions = document.querySelectorAll("[id^=content_question_]")
-    const target = questions
-      .values()
-      .find((x) => x.querySelector(".checked") == null)
-    if (!target) {
+    const target = this.getTargetedQuestion()
+    if (target == null) {
       throw new Error("Could not find active question target to execute answer")
     }
 
@@ -65,11 +58,7 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
   }
 
   async executeSubmit(): Promise<void> {
-    const questions = document.querySelectorAll("[id^=content_question_]")
-
-    const isEveryQuestionIsAnwsered = questions
-      .values()
-      .every((x) => x.querySelector(".checked") != null)
+    const isEveryQuestionIsAnwsered = this.getTargetedQuestion() == null
     if (!isEveryQuestionIsAnwsered) {
       return
     }
@@ -78,5 +67,16 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
       "input[type='submit']"
     )
     submitButton.click()
+  }
+
+  private getTargetedQuestion() {
+    const target = document
+      .querySelectorAll("[id^=content_question_]")
+      .values()
+      .find((x) => x.querySelector(".checked") == null)
+    if (!target) {
+      return null
+    }
+    return target
   }
 }
