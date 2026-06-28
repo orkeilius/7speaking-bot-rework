@@ -1,10 +1,11 @@
-import {Constants} from "../utils/Constants";
+import {Constants} from "../../utils/Constants";
 import {TimerType, timeService} from "~contents/services/TimerService";
 import {logMessage} from "~contents/utils/Logging";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
+import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
 
 
-export class LearningHandler implements RouteHandlerInterface {
+export class LearningHandler7s implements RouteHandlerInterface {
 
     isDetected(): boolean {
         return this.getQuizButton() != null

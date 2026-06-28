@@ -1,7 +1,7 @@
 import {mockStorageInstance} from '../../helpers/mockStorage';
-import {HomeHandler} from '~contents/routes/HomeHandler';
-import {BeginnerWorkshopHandler} from '~contents/routes/BeginnerWorkshopHandler';
-import {LearningHandler} from '~contents/routes/LearningHandler';
+import {HomeHandler} from '~contents/routes/7speaking/HomeHandler';
+import {BeginnerWorkshopHandler} from '~contents/routes/7speaking/BeginnerWorkshopHandler';
+import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
 import {StorageKeys} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
@@ -122,7 +122,7 @@ describe('Route Handlers', () => {
 
     describe('LearningHandler', () => {
         test('isDetected checks if any quiz button exists', () => {
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
             expect(handler.isDetected()).toBe(false);
 
             const btn = document.createElement('button');
@@ -139,7 +139,7 @@ describe('Route Handlers', () => {
             const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {
             });
 
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
 
             // JSDOM logs a "Not implemented: navigation" error instead of throwing when location.replace is called.
             await handler.handler();
@@ -160,7 +160,7 @@ describe('Route Handlers', () => {
             btn.click = jest.fn();
             document.body.appendChild(btn);
 
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
             await handler.handler();
 
             expect(btn.click).toHaveBeenCalled();
