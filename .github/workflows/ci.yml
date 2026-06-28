@@ -63,7 +63,7 @@ jobs:
       - name: Download coverage
         uses: actions/download-artifact@v8.0.1
         with:
-          path: "./coverage/lcov.info"
+          path: "./coverage"
           name: coverage_info
 
       - name: SonarQube Scan
