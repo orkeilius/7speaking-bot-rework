@@ -2,8 +2,9 @@ import {mockStorageInstance} from '../../helpers/mockStorage';
 import {HomeHandler} from '~contents/routes/7speaking/HomeHandler';
 import {BeginnerWorkshopHandler} from '~contents/routes/7speaking/BeginnerWorkshopHandler';
 import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
+import {LearningHandlerPmf} from '~contents/routes/prepmyfutur/LearningHandlerPmf';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
-import {StorageKeys} from '~contents/services/StorageService';
+import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
 import {logMessage} from '~contents/utils/Logging';
 
@@ -165,6 +166,65 @@ describe('Route Handlers', () => {
 
             expect(btn.click).toHaveBeenCalled();
             expect(logMessage).toHaveBeenCalledWith('☝️🤓 quiz time!');
+        });
+    });
+
+    describe('LearningHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/lesson_tab/.*', () => {
+            const handler = new LearningHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/lesson_tab/1');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/lesson_tab/content');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler returns early if waiting has not ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(false);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).not.toHaveBeenCalled();
+            expect(logMessage).not.toHaveBeenCalled();
+        });
+
+        test('handler clicks button if waiting has ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(true);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('💡 In to the next one');
+        });
+
+        test('handler updates stat when waiting has ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(true);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(await storageService.get(StorageKeys.STAT_QUIZ_DONE)).toBe(1);
         });
     });
 

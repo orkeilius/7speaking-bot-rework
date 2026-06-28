@@ -9,6 +9,7 @@ import { StorageKeys, storageService } from "~contents/services/StorageService"
 import { updateService } from "~contents/services/UpdateService"
 import { Constants } from "~contents/utils/Constants"
 import { logMessage } from "~contents/utils/Logging"
+import { LearningHandlerPmf } from "~contents/routes/prepmyfutur/LearningHandlerPmf"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://user.7speaking.com/*", "https://prepmyfuture.com/*"],
@@ -20,6 +21,7 @@ const routesHandler: RouteHandlerInterface[] = [
   new HomeHandler(),
   new BeginnerWorkshopHandler(),
   new LearningHandler7s(),
+  new LearningHandlerPmf()
 ]
 
 class Bot {
