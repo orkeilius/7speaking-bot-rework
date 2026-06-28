@@ -3,6 +3,7 @@ import {HomeHandler} from '~contents/routes/7speaking/HomeHandler';
 import {BeginnerWorkshopHandler} from '~contents/routes/7speaking/BeginnerWorkshopHandler';
 import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
 import {LearningHandlerPmf} from '~contents/routes/prepmyfutur/LearningHandlerPmf';
+import {QuizzAccessHandlerPmf} from '~contents/routes/prepmyfutur/QuizzAccessHandlerPmf';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
 import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
@@ -228,6 +229,69 @@ describe('Route Handlers', () => {
         });
     });
 
+    describe('QuizzAccessHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/access_.*', () => {
+            const handler = new QuizzAccessHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/access_quiz');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/access_lesson');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler clicks quiz button when quiz is not completed', async () => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary';
+            const mainActivity = document.createElement('div');
+            mainActivity.className = 'main_activity';
+            mainActivity.appendChild(btn);
+            document.body.appendChild(mainActivity);
+
+            const handler = new QuizzAccessHandlerPmf();
+            const clickSpy = jest.spyOn(btn, 'click');
+
+            await handler.handler();
+
+            expect(clickSpy).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('☝️🤓 quiz time!');
+        });
+
+        test('handler skips to next when quiz is completed', async () => {
+            const skipBtn = document.createElement('button');
+            skipBtn.className = 'btn btn-primary';
+            const header = document.createElement('div');
+            header.id = 'study-plan-unit-header';
+            header.appendChild(skipBtn);
+            document.body.appendChild(header);
+
+            const completedStatus = document.createElement('div');
+            completedStatus.className = 'activity_statut_completed';
+            document.body.appendChild(completedStatus);
+
+            const handler = new QuizzAccessHandlerPmf();
+            const clickSpy = jest.spyOn(skipBtn, 'click');
+
+            await handler.handler();
+
+            expect(clickSpy).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('⏩ Skipping');
+        });
+
+        test('handler logs message when quiz is completed but skip button not found', async () => {
+            const completedStatus = document.createElement('div');
+            completedStatus.className = 'activity_statut_completed';
+            document.body.appendChild(completedStatus);
+
+            const handler = new QuizzAccessHandlerPmf();
+            await handler.handler();
+
+            expect(logMessage).toHaveBeenCalledWith('😓 already done ...');
+        });
+    });
     describe('QuizzHandler', () => {
         test('isDetected returns true if route matches /quiz or question handler is detected', () => {
             const handler = new QuizzHandler();
