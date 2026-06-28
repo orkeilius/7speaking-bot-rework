@@ -52,7 +52,8 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://user.7speaking.com/*"
+      "https://user.7speaking.com/*",
+      "https://prepmyfuture.com/*"
     ],
     "permissions": [
       "scripting"

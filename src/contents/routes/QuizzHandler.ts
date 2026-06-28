@@ -1,23 +1,26 @@
 import type {QuestionInterface} from "~contents/question/QuestionInterface";
-import {TextInput} from "~contents/question/TextInput";
-import {EndScreen} from "~contents/question/EndScreen";
-import {MultipleResponse} from "~contents/question/MultipleResponse";
-import {DragAndDrop} from "~contents/question/DragAndDrop";
-import {ToeicMultipleResponse} from "~contents/question/ToeicMultipleResponse";
-import {ToeicInterstitial} from "~contents/question/ToeicInterstitial";
+import {TextInput} from "~contents/question/7speaking/TextInput";
+import {EndScreen} from "~contents/question/7speaking/EndScreen";
+import {MultipleResponse7s} from "~contents/question/7speaking/MultipleResponse7s";
+import {DragAndDrop} from "~contents/question/7speaking/DragAndDrop";
+import {ToeicMultipleResponse} from "~contents/question/7speaking/ToeicMultipleResponse";
+import {ToeicInterstitial} from "~contents/question/7speaking/ToeicInterstitial";
 import {TimerType, timeService} from "~contents/services/TimerService";
 import {logMessage} from "~contents/utils/Logging";
+import {MultipleResponsePmf} from "~contents/question/prepmyfutur/MultipleResponsePmf";
+import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
 
 
 export class QuizzHandler implements RouteHandlerInterface {
 
     static readonly listQuestion: QuestionInterface[] = [
         new TextInput(),
-        new MultipleResponse(),
+        new MultipleResponse7s(),
         new DragAndDrop(),
         new EndScreen(),
         new ToeicMultipleResponse(),
-        new ToeicInterstitial()
+        new ToeicInterstitial(),
+        new MultipleResponsePmf()
     ];
 
     readonly routeRegex = /^\/quiz/;

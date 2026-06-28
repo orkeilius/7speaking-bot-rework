@@ -10,7 +10,6 @@ export class BeginnerWorkshopHandler implements RouteHandlerInterface {
 
     async handler() {
         const nextButton = document.querySelector<HTMLElement>(Constants.NextButtonSelector);
-        console.log("next : ", nextButton)
         if (nextButton != null) {
             logMessage("➡️ Next button found, clicking...")
             nextButton.click()

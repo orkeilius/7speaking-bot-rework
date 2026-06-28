@@ -1,7 +1,7 @@
 import {QuestionInterface} from "~contents/question/QuestionInterface";
 import GetAnswer from "~contents/mainWorldClient/mainWorldFunction/GetAnswer";
 
-export class MultipleResponse extends QuestionInterface<string> {
+export class MultipleResponse7s extends QuestionInterface<string> {
     isDetected(): boolean {
         return document.querySelector<HTMLInputElement>(".answer-container > button") !== null;
     }
