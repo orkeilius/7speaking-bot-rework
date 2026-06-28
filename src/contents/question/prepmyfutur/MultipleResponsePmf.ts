@@ -1,5 +1,9 @@
-import { QuestionInterface } from "~contents/question/QuestionInterface"
-import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService"
+import { QuestionInterface } from "~contents/question/QuestionInterface";
+import { prepmyfuturAnwserService } from "~contents/services/PrepmyfuturAnwserService";
+
+
+
+
 
 export class MultipleResponsePmf extends QuestionInterface<number> {
   isDetected(): boolean {
@@ -63,10 +67,9 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
       return
     }
 
-    const submitButton = document.querySelector<HTMLButtonElement>(
+    document.querySelector<HTMLButtonElement>(
       "input[type='submit']"
-    )
-    submitButton.click()
+    ).click()
   }
 
   private getTargetedQuestion() {

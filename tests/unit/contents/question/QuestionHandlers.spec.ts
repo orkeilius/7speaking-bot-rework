@@ -3,7 +3,7 @@ import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {QuestionInterface} from '~contents/question/QuestionInterface';
 import {DragAndDrop} from '~contents/question/7speaking/DragAndDrop';
 import {EndScreen} from '~contents/question/7speaking/EndScreen';
-import {MultipleResponse} from '~contents/question/7speaking/MultipleResponse';
+import {MultipleResponse7s} from '~contents/question/7speaking/MultipleResponse7s';
 import {TextInput} from '~contents/question/7speaking/TextInput';
 import {ToeicInterstitial} from '~contents/question/7speaking/ToeicInterstitial';
 import {ToeicMultipleResponse} from '~contents/question/7speaking/ToeicMultipleResponse';
@@ -74,7 +74,7 @@ describe('QuestionHandlers & QuestionInterface', () => {
 
             await question.handler();
 
-            expect(logMessage).toHaveBeenCalledWith('⚠️ Error executing good answer, (Error: something failed)');
+            expect(logMessage).toHaveBeenCalledWith('⚠️ Error executing answer, (Error: something failed)');
         });
     });
 
@@ -127,7 +127,7 @@ describe('QuestionHandlers & QuestionInterface', () => {
 
     describe('MultipleResponse Handler', () => {
         test('isDetected checks for button inside answer-container', () => {
-            const handler = new MultipleResponse();
+            const handler = new MultipleResponse7s();
             expect(handler.isDetected()).toBe(false);
 
             const container = document.createElement('div');
@@ -152,7 +152,7 @@ describe('QuestionHandlers & QuestionInterface', () => {
 
             jest.spyOn(GetAnswer.prototype, 'callFunction').mockResolvedValue('Good Option');
 
-            const handler = new MultipleResponse();
+            const handler = new MultipleResponse7s();
             const bad = await handler.getBadAnswer();
             expect(bad).toBe('Bad Option');
         });
@@ -166,7 +166,7 @@ describe('QuestionHandlers & QuestionInterface', () => {
             container.appendChild(btn);
             document.body.appendChild(container);
 
-            const handler = new MultipleResponse();
+            const handler = new MultipleResponse7s();
             await handler.executeAnswer('Match');
             expect(clickSpy).toHaveBeenCalled();
         });
