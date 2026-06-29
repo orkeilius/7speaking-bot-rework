@@ -19,26 +19,42 @@ jest.mock('~contents/services/PrepmyfuturAnwserService', () => ({
 
 describe('MultipleResponsePmf', () => {
     let handler: MultipleResponsePmf;
+    let originalCheckVisibility: typeof Element.prototype.checkVisibility;
 
     beforeEach(() => {
         handler = new MultipleResponsePmf();
         document.body.innerHTML = '';
         jest.clearAllMocks();
-        // Reset query parameters to empty
         window.history.pushState({}, '', '/home');
+        originalCheckVisibility = Element.prototype.checkVisibility;
+    });
+
+    afterEach(() => {
+        Element.prototype.checkVisibility = originalCheckVisibility;
     });
 
     describe('isDetected', () => {
-        test('should return true if expected radio span exists', () => {
+        test('should return true if radio spans exist and are visible', () => {
             document.body.innerHTML = `
                 <span class="answer-label qru">
                     <span class="rep-checkbox radio"></span>
                 </span>
             `;
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(true);
             expect(handler.isDetected()).toBe(true);
         });
 
-        test('should return false if expected radio span does not exist', () => {
+        test('should return false if no radio spans exist', () => {
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('should return false if radio spans exist but are not visible', () => {
+            document.body.innerHTML = `
+                <span class="answer-label qru">
+                    <span class="rep-checkbox radio"></span>
+                </span>
+            `;
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(false);
             expect(handler.isDetected()).toBe(false);
         });
     });
