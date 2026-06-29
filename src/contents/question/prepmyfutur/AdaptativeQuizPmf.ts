@@ -1,8 +1,7 @@
-import {QuestionInterface} from "~contents/question/QuestionInterface";
-import {StorageKeys, storageService} from "~contents/services/StorageService";
+import {MultipleResponsePmf} from "~contents/question/prepmyfutur/MultipleResponsePmf";
 
 
-export class AdaptativeQuizPmf extends QuestionInterface<number> {
+export class AdaptativeQuizPmf extends MultipleResponsePmf {
     isDetected(): boolean {
 
         const containQuiz = document.querySelector(
@@ -16,13 +15,6 @@ export class AdaptativeQuizPmf extends QuestionInterface<number> {
         return containQuiz && isAdaptiveQuiz && !isResultPage
     }
 
-    protected getGoodText(): string {
-        return "📝 Clicking button"
-    }
-
-    protected getBadText(): string {
-        return "📝 Tapping on the screen"
-    }
 
     async getGoodAnswer(): Promise<number> {
         const responseContainer = document.querySelector("[id^=container_solution_]")
@@ -39,49 +31,5 @@ export class AdaptativeQuizPmf extends QuestionInterface<number> {
         }
 
         return correctEntry[0] // return index
-    }
-
-    async getBadAnswer(): Promise<number> {
-        const nbAnwser =
-            this.getTargetedQuestion().querySelectorAll(".radio").length
-        const goodAnswer = await this.getGoodAnswer()
-
-        return [...new Array(nbAnwser - 1).keys()].filter((x) => x !== goodAnswer)[
-            Math.floor(Math.random() * (nbAnwser - 2))
-            ]
-    }
-
-    async executeAnswer(answer: number): Promise<void> {
-        const target = this.getTargetedQuestion()
-        if (target == null) {
-            throw new Error("Could not find active question target to execute answer")
-        }
-
-        target
-            .querySelector<HTMLButtonElement>(`[for$=-answer-${answer + 1}] .radio`)
-            .click()
-    }
-
-    async executeSubmit(): Promise<void> {
-        const isEveryQuestionIsAnwsered = this.getTargetedQuestion() == null
-        if (!isEveryQuestionIsAnwsered) {
-            return
-        }
-
-        await storageService.update(StorageKeys.STAT_QUIZ_DONE)
-        document.querySelector<HTMLButtonElement>(
-            "input[type='submit']"
-        ).click()
-    }
-
-    private getTargetedQuestion() {
-        const target = document
-            .querySelectorAll("[id^=content_question_]")
-            .values()
-            .find((x) => x.querySelector(".checked") == null)
-        if (!target) {
-            return null
-        }
-        return target
     }
 }
