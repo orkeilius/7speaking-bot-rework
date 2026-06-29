@@ -1,5 +1,6 @@
-import {Constants} from "../utils/Constants";
+import {Constants} from "../../utils/Constants";
 import {logMessage} from "~contents/utils/Logging";
+import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
 
 export class BeginnerWorkshopHandler implements RouteHandlerInterface {
 

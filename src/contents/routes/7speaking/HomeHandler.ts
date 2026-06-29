@@ -1,4 +1,5 @@
 import {logMessage} from "~contents/utils/Logging";
+import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
 
 export class HomeHandler implements RouteHandlerInterface{
 

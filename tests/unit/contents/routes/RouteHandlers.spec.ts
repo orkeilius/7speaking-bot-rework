@@ -1,9 +1,12 @@
 import {mockStorageInstance} from '../../helpers/mockStorage';
-import {HomeHandler} from '~contents/routes/HomeHandler';
-import {BeginnerWorkshopHandler} from '~contents/routes/BeginnerWorkshopHandler';
-import {LearningHandler} from '~contents/routes/LearningHandler';
+import {HomeHandler} from '~contents/routes/7speaking/HomeHandler';
+import {BeginnerWorkshopHandler} from '~contents/routes/7speaking/BeginnerWorkshopHandler';
+import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
+import {LearningHandlerPmf} from '~contents/routes/prepmyfutur/LearningHandlerPmf';
+import {QuizzAccessHandlerPmf} from '~contents/routes/prepmyfutur/QuizzAccessHandlerPmf';
+import {QuizzResultHandlerPmf} from '~contents/routes/prepmyfutur/QuizzResultHandlerPmf';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
-import {StorageKeys} from '~contents/services/StorageService';
+import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
 import {logMessage} from '~contents/utils/Logging';
 
@@ -122,7 +125,7 @@ describe('Route Handlers', () => {
 
     describe('LearningHandler', () => {
         test('isDetected checks if any quiz button exists', () => {
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
             expect(handler.isDetected()).toBe(false);
 
             const btn = document.createElement('button');
@@ -139,7 +142,7 @@ describe('Route Handlers', () => {
             const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {
             });
 
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
 
             // JSDOM logs a "Not implemented: navigation" error instead of throwing when location.replace is called.
             await handler.handler();
@@ -160,11 +163,162 @@ describe('Route Handlers', () => {
             btn.click = jest.fn();
             document.body.appendChild(btn);
 
-            const handler = new LearningHandler();
+            const handler = new LearningHandler7s();
             await handler.handler();
 
             expect(btn.click).toHaveBeenCalled();
             expect(logMessage).toHaveBeenCalledWith('☝️🤓 quiz time!');
+        });
+    });
+
+    describe('LearningHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/lesson_tab/.*', () => {
+            const handler = new LearningHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/lesson_tab/1');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/lesson_tab/content');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler returns early if waiting has not ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(false);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).not.toHaveBeenCalled();
+            expect(logMessage).not.toHaveBeenCalled();
+        });
+
+        test('handler clicks button if waiting has ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(true);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('💡 In to the next one');
+        });
+
+        test('handler updates stat when waiting has ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(true);
+
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new LearningHandlerPmf();
+            await handler.handler();
+
+            expect(await storageService.get(StorageKeys.STAT_QUIZ_DONE)).toBe(1);
+        });
+    });
+
+    describe('QuizzAccessHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/access_.*', () => {
+            const handler = new QuizzAccessHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/access_quiz');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/access_lesson');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler clicks quiz button when quiz is not completed', async () => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary';
+            const mainActivity = document.createElement('div');
+            mainActivity.className = 'main_activity';
+            mainActivity.appendChild(btn);
+            document.body.appendChild(mainActivity);
+
+            const handler = new QuizzAccessHandlerPmf();
+            const clickSpy = jest.spyOn(btn, 'click');
+
+            await handler.handler();
+
+            expect(clickSpy).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('☝️🤓 quiz time!');
+        });
+
+        test('handler skips to next when quiz is completed', async () => {
+            const skipBtn = document.createElement('button');
+            skipBtn.className = 'btn btn-primary';
+            const header = document.createElement('div');
+            header.id = 'study-plan-unit-header';
+            header.appendChild(skipBtn);
+            document.body.appendChild(header);
+
+            const completedStatus = document.createElement('div');
+            completedStatus.className = 'activity_statut_completed';
+            document.body.appendChild(completedStatus);
+
+            const handler = new QuizzAccessHandlerPmf();
+            const clickSpy = jest.spyOn(skipBtn, 'click');
+
+            await handler.handler();
+
+            expect(clickSpy).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('⏩ Skipping');
+        });
+
+        test('handler logs message when quiz is completed but skip button not found', async () => {
+            const completedStatus = document.createElement('div');
+            completedStatus.className = 'activity_statut_completed';
+            document.body.appendChild(completedStatus);
+
+            const handler = new QuizzAccessHandlerPmf();
+            await handler.handler();
+
+            expect(logMessage).toHaveBeenCalledWith('😓 already done ...');
+        });
+    });
+
+    describe('QuizzResultHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/exercise_results.*', () => {
+            const handler = new QuizzResultHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/exercise_results');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/exercise_results/summary');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler clicks button', async () => {
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            btn.click = jest.fn();
+            document.body.appendChild(btn);
+
+            const handler = new QuizzResultHandlerPmf();
+            await handler.handler();
+
+            expect(btn.click).toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('💡 In to the next one');
         });
     });
 
