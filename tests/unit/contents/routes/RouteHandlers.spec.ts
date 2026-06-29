@@ -387,6 +387,22 @@ describe('Route Handlers', () => {
             handlerSpy.mockRestore();
         });
 
+        test('handler returns early when waiting has not ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(false);
+
+            const mockQuestion = QuizzHandler.listQuestion[0];
+            const isDetectedSpy = jest.spyOn(mockQuestion, 'isDetected').mockReturnValue(true);
+            const handlerSpy = jest.spyOn(mockQuestion, 'handler').mockResolvedValue(undefined);
+
+            const handler = new QuizzHandler();
+            await handler.handler();
+
+            expect(handlerSpy).not.toHaveBeenCalled();
+
+            isDetectedSpy.mockRestore();
+            handlerSpy.mockRestore();
+        });
+
         test('handler logs message if no question type detected', async () => {
             const handler = new QuizzHandler();
             const spies = QuizzHandler.listQuestion.map(q => jest.spyOn(q, 'isDetected').mockReturnValue(false));

@@ -1,18 +1,19 @@
 import {QuestionInterface} from "~contents/question/QuestionInterface";
-import {prepmyfuturAnwserService} from "~contents/services/PrepmyfuturAnwserService";
 import {StorageKeys, storageService} from "~contents/services/StorageService";
 
 
-export class MultipleResponsePmf extends QuestionInterface<number> {
+export class AdaptativeQuizPmf extends QuestionInterface<number> {
     isDetected(): boolean {
 
         const containQuiz = document.querySelector(
             "span.answer-label.qru span.rep-checkbox.radio"
         ) !== null
 
-        const isAdaptiveQuizz = document.querySelector("#explanations_box") !== null
+        const adaptativeResponse = document.querySelector("#explanations_box")
+        const isAdaptiveQuiz = adaptativeResponse !== null
+        const isResultPage = adaptativeResponse?.checkVisibility()
 
-        return  containQuiz && !isAdaptiveQuizz
+        return containQuiz && isAdaptiveQuiz && !isResultPage
     }
 
     protected getGoodText(): string {
@@ -24,22 +25,20 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
     }
 
     async getGoodAnswer(): Promise<number> {
-        const params = new URLSearchParams(globalThis.location.search)
-        const exerciseId = params.get("user_exercise_id") ?? params.get("id")
-        if (!exerciseId) {
-            throw new Error("Could not find exercise ID in URL")
-        }
-        const activityId = Number.parseInt(exerciseId, 10)
-
-        const target = this.getTargetedQuestion()
-
-        if (target == null) {
-            throw new Error("Could not find active question target")
+        const responseContainer = document.querySelector("[id^=container_solution_]")
+        if (!responseContainer) {
+            throw new Error("Could not find solution container for adaptive question")
         }
 
-        const questionId = target.id.replace("content_question_", "")
+        const answers = responseContainer.querySelectorAll(".question .answer")
+        const correctEntry = [...answers.entries()]
+            .find(([_, answers]) => answers.className.includes("right"))
 
-        return await prepmyfuturAnwserService.getAnwsers(questionId, activityId)
+        if (!correctEntry) {
+            throw new Error("Could not find correct answer in adaptive question solution")
+        }
+
+        return correctEntry[0] // return index
     }
 
     async getBadAnswer(): Promise<number> {
