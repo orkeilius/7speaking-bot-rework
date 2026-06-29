@@ -1,7 +1,6 @@
 import { mockStorageInstance } from '../../../helpers/mockStorage';
 import { StorageKeys, storageService } from '~contents/services/StorageService';
-import { MultipleResponsePmf } from '~contents/question/prepmyfutur/MultipleResponsePmf';
-import { prepmyfuturAnwserService } from '~contents/services/PrepmyfuturAnwserService';
+import { AdaptativeQuizPmf } from '~contents/question/prepmyfutur/AdaptativeQuizPmf';
 
 jest.mock('@plasmohq/storage', () => {
     return {
@@ -11,43 +10,59 @@ jest.mock('@plasmohq/storage', () => {
     };
 });
 
-jest.mock('~contents/services/PrepmyfuturAnwserService', () => ({
-    prepmyfuturAnwserService: {
-        getAnwsers: jest.fn(),
-    },
-}));
-
-describe('MultipleResponsePmf', () => {
-    let handler: MultipleResponsePmf;
+describe('AdaptativeQuizPmf', () => {
+    let handler: AdaptativeQuizPmf;
+    let originalCheckVisibility: typeof Element.prototype.checkVisibility;
 
     beforeEach(() => {
-        handler = new MultipleResponsePmf();
+        handler = new AdaptativeQuizPmf();
         document.body.innerHTML = '';
         jest.clearAllMocks();
         window.history.pushState({}, '', '/home');
+        originalCheckVisibility = Element.prototype.checkVisibility;
+    });
+
+    afterEach(() => {
+        Element.prototype.checkVisibility = originalCheckVisibility;
     });
 
     describe('isDetected', () => {
-        test('should return true if radio spans exist and no explanations_box', () => {
-            document.body.innerHTML = `
-                <span class="answer-label qru">
-                    <span class="rep-checkbox radio"></span>
-                </span>
-            `;
-            expect(handler.isDetected()).toBe(true);
-        });
-
-        test('should return false if no radio spans exist', () => {
-            expect(handler.isDetected()).toBe(false);
-        });
-
-        test('should return false if radio spans exist but explanations_box is present (adaptive quiz)', () => {
+        test('should return true when radio spans, explanations_box exist, and not a result page', () => {
             document.body.innerHTML = `
                 <span class="answer-label qru">
                     <span class="rep-checkbox radio"></span>
                 </span>
                 <div id="explanations_box"></div>
             `;
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(false);
+            expect(handler.isDetected()).toBe(true);
+        });
+
+        test('should return false when no radio spans exist', () => {
+            document.body.innerHTML = `
+                <div id="explanations_box"></div>
+            `;
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(false);
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('should return false when explanations_box does not exist', () => {
+            document.body.innerHTML = `
+                <span class="answer-label qru">
+                    <span class="rep-checkbox radio"></span>
+                </span>
+            `;
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('should return false when explanations_box is visible (result page)', () => {
+            document.body.innerHTML = `
+                <span class="answer-label qru">
+                    <span class="rep-checkbox radio"></span>
+                </span>
+                <div id="explanations_box"></div>
+            `;
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(true);
             expect(handler.isDetected()).toBe(false);
         });
     });
@@ -60,39 +75,41 @@ describe('MultipleResponsePmf', () => {
     });
 
     describe('getGoodAnswer', () => {
-        test('should throw error if exercise ID is not in URL', async () => {
-            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find exercise ID in URL');
+        test('should throw error if no solution container found', async () => {
+            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find solution container for adaptive question');
         });
 
-        test('should throw error if active question target is not found', async () => {
-            window.history.pushState({}, '', '?user_exercise_id=12345');
-            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find active question target');
-        });
-
-        test('should fetch and return good answer index when target is found', async () => {
-            window.history.pushState({}, '', '?id=12345');
-            
+        test('should throw error if no correct answer found in solution container', async () => {
             document.body.innerHTML = `
-                <div id="content_question_111">
-                    <span class="checked"></span>
-                </div>
-                <div id="content_question_222">
-                    <!-- active question, no .checked -->
+                <div id="container_solution_123">
+                    <div class="question">
+                        <div class="answer">Wrong A</div>
+                        <div class="answer">Wrong B</div>
+                    </div>
                 </div>
             `;
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find correct answer in adaptive question solution');
+            consoleSpy.mockRestore();
+        });
 
-            (prepmyfuturAnwserService.getAnwsers as jest.Mock).mockResolvedValue(2);
-
+        test('should return index of correct answer from solution container', async () => {
+            document.body.innerHTML = `
+                <div id="container_solution_123">
+                    <div class="question">
+                        <div class="answer">Wrong A</div>
+                        <div class="answer right">Correct B</div>
+                        <div class="answer">Wrong C</div>
+                    </div>
+                </div>
+            `;
             const result = await handler.getGoodAnswer();
-            expect(result).toBe(2);
-            expect(prepmyfuturAnwserService.getAnwsers).toHaveBeenCalledWith('222', 12345);
+            expect(result).toBe(1);
         });
     });
 
     describe('getBadAnswer', () => {
         test('should return a random wrong answer index', async () => {
-            window.history.pushState({}, '', '?user_exercise_id=12345');
-            
             document.body.innerHTML = `
                 <div id="content_question_222">
                     <span class="radio">A</span>

@@ -9,6 +9,7 @@ import {TimerType, timeService} from "~contents/services/TimerService";
 import {logMessage} from "~contents/utils/Logging";
 import {MultipleResponsePmf} from "~contents/question/prepmyfutur/MultipleResponsePmf";
 import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
+import {AdaptativeQuizPmf} from "~contents/question/prepmyfutur/AdaptativeQuizPmf";
 
 
 export class QuizzHandler implements RouteHandlerInterface {
@@ -20,7 +21,8 @@ export class QuizzHandler implements RouteHandlerInterface {
         new EndScreen(),
         new ToeicMultipleResponse(),
         new ToeicInterstitial(),
-        new MultipleResponsePmf()
+        new MultipleResponsePmf(),
+        new AdaptativeQuizPmf()
     ];
 
     readonly routeRegex = /^\/quiz/;

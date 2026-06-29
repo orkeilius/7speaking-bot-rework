@@ -295,7 +295,17 @@ describe('Route Handlers', () => {
     });
 
     describe('QuizzResultHandlerPmf', () => {
-        test('isDetected checks if location.pathname matches /platform/.*/exercise_results.*', () => {
+        let originalCheckVisibility: typeof Element.prototype.checkVisibility;
+
+        beforeEach(() => {
+            originalCheckVisibility = Element.prototype.checkVisibility;
+        });
+
+        afterEach(() => {
+            Element.prototype.checkVisibility = originalCheckVisibility;
+        });
+
+        test('isDetected returns true for result route', () => {
             const handler = new QuizzResultHandlerPmf();
 
             window.history.pushState({}, '', '/platform/abc123/exercise_results');
@@ -303,16 +313,44 @@ describe('Route Handlers', () => {
 
             window.history.pushState({}, '', '/platform/course/exercise_results/summary');
             expect(handler.isDetected()).toBe(true);
+        });
+
+        test('isDetected returns true for adaptive route when all radios are not visible (result page)', () => {
+            const handler = new QuizzResultHandlerPmf();
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(false);
+
+            window.history.pushState({}, '', '/platform/abc123/adaptive_exercises/123');
+            expect(handler.isDetected()).toBe(true);
+        });
+
+        test('isDetected returns false for adaptive route when radios are visible (quiz in progress)', () => {
+            document.body.innerHTML = `
+                <span class="answer-label qru">
+                    <span class="rep-checkbox radio"></span>
+                </span>
+            `;
+            const handler = new QuizzResultHandlerPmf();
+            Element.prototype.checkVisibility = jest.fn().mockReturnValue(true);
+
+            window.history.pushState({}, '', '/platform/abc123/adaptive_exercises/123');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('isDetected returns false for non-matching paths', () => {
+            const handler = new QuizzResultHandlerPmf();
 
             window.history.pushState({}, '', '/home');
             expect(handler.isDetected()).toBe(false);
         });
 
-        test('handler clicks button', async () => {
+        test('handler clicks .card a.btn.btn-primary button', async () => {
+            const card = document.createElement('div');
+            card.className = 'card';
             const btn = document.createElement('a');
             btn.className = 'btn btn-primary';
             btn.click = jest.fn();
-            document.body.appendChild(btn);
+            card.appendChild(btn);
+            document.body.appendChild(card);
 
             const handler = new QuizzResultHandlerPmf();
             await handler.handler();
@@ -344,6 +382,22 @@ describe('Route Handlers', () => {
             await handler.handler();
 
             expect(handlerSpy).toHaveBeenCalled();
+
+            isDetectedSpy.mockRestore();
+            handlerSpy.mockRestore();
+        });
+
+        test('handler returns early when waiting has not ended', async () => {
+            (timeService.isWaitingEnded as jest.Mock).mockResolvedValue(false);
+
+            const mockQuestion = QuizzHandler.listQuestion[0];
+            const isDetectedSpy = jest.spyOn(mockQuestion, 'isDetected').mockReturnValue(true);
+            const handlerSpy = jest.spyOn(mockQuestion, 'handler').mockResolvedValue(undefined);
+
+            const handler = new QuizzHandler();
+            await handler.handler();
+
+            expect(handlerSpy).not.toHaveBeenCalled();
 
             isDetectedSpy.mockRestore();
             handlerSpy.mockRestore();
