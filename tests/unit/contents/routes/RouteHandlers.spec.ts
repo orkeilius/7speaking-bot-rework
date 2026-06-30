@@ -5,6 +5,7 @@ import {LearningHandler7s} from '~contents/routes/7speaking/LearningHandler7s';
 import {LearningHandlerPmf} from '~contents/routes/prepmyfutur/LearningHandlerPmf';
 import {QuizzAccessHandlerPmf} from '~contents/routes/prepmyfutur/QuizzAccessHandlerPmf';
 import {QuizzResultHandlerPmf} from '~contents/routes/prepmyfutur/QuizzResultHandlerPmf';
+import {MultipleStepQuizAccessHandlerPmf} from '~contents/routes/prepmyfutur/MultipleStepQuizAccessHandlerPmf';
 import {QuizzHandler} from '~contents/routes/QuizzHandler';
 import {StorageKeys, storageService} from '~contents/services/StorageService';
 import {timeService} from '~contents/services/TimerService';
@@ -291,6 +292,74 @@ describe('Route Handlers', () => {
             await handler.handler();
 
             expect(logMessage).toHaveBeenCalledWith('😓 already done ...');
+        });
+    });
+
+    describe('MultipleStepQuizAccessHandlerPmf', () => {
+        test('isDetected checks if location.pathname matches /platform/.*/continue_user_exam.*', () => {
+            const handler = new MultipleStepQuizAccessHandlerPmf();
+
+            window.history.pushState({}, '', '/platform/abc123/continue_user_exam');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/platform/course/continue_user_exam/123');
+            expect(handler.isDetected()).toBe(true);
+
+            window.history.pushState({}, '', '/home');
+            expect(handler.isDetected()).toBe(false);
+        });
+
+        test('handler clicks exercice link in row without restart button', async () => {
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            const validRow = document.createElement('div');
+            validRow.className = 'row';
+            const targetBtn = document.createElement('a');
+            targetBtn.className = 'btn btn-primary';
+            targetBtn.click = jest.fn();
+            validRow.appendChild(targetBtn);
+            cardBody.appendChild(validRow);
+
+            const rowWithRestart = document.createElement('div');
+            rowWithRestart.className = 'row';
+            const primaryBtn = document.createElement('a');
+            primaryBtn.className = 'btn btn-primary';
+            primaryBtn.click = jest.fn();
+            rowWithRestart.appendChild(primaryBtn);
+            const restartBtn = document.createElement('a');
+            restartBtn.className = 'btn btn-secondary';
+            rowWithRestart.appendChild(restartBtn);
+            cardBody.appendChild(rowWithRestart);
+
+            document.body.appendChild(cardBody);
+
+            const handler = new MultipleStepQuizAccessHandlerPmf();
+            await handler.handler();
+
+            expect(targetBtn.click).toHaveBeenCalled();
+            expect(primaryBtn.click).not.toHaveBeenCalled();
+            expect(logMessage).toHaveBeenCalledWith('💡 In to the next one');
+        });
+
+        test('handler throws if no valid row is found', async () => {
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            const rowWithRestart = document.createElement('div');
+            rowWithRestart.className = 'row';
+            const btn = document.createElement('a');
+            btn.className = 'btn btn-primary';
+            rowWithRestart.appendChild(btn);
+            const restartBtn = document.createElement('a');
+            restartBtn.className = 'btn btn-secondary';
+            rowWithRestart.appendChild(restartBtn);
+            cardBody.appendChild(rowWithRestart);
+
+            document.body.appendChild(cardBody);
+
+            const handler = new MultipleStepQuizAccessHandlerPmf();
+            await expect(handler.handler()).rejects.toThrow();
         });
     });
 

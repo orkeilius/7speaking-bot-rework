@@ -1,17 +1,18 @@
-import type { PlasmoCSConfig } from "plasmo"
+import type { PlasmoCSConfig } from "plasmo";
 
-import { BeginnerWorkshopHandler } from "~contents/routes/7speaking/BeginnerWorkshopHandler"
-import { HomeHandler } from "~contents/routes/7speaking/HomeHandler"
-import { LearningHandler7s } from "~contents/routes/7speaking/LearningHandler7s"
-import { QuizzHandler } from "~contents/routes/QuizzHandler"
-import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface"
-import { StorageKeys, storageService } from "~contents/services/StorageService"
-import { updateService } from "~contents/services/UpdateService"
-import { Constants } from "~contents/utils/Constants"
-import { logMessage } from "~contents/utils/Logging"
-import { LearningHandlerPmf } from "~contents/routes/prepmyfutur/LearningHandlerPmf"
-import { QuizzAccessHandlerPmf } from "~contents/routes/prepmyfutur/QuizzAccessHandlerPmf"
-import { QuizzResultHandlerPmf } from "~contents/routes/prepmyfutur/QuizzResultHandlerPmf"
+import { BeginnerWorkshopHandler } from "~contents/routes/7speaking/BeginnerWorkshopHandler";
+import { HomeHandler } from "~contents/routes/7speaking/HomeHandler";
+import { LearningHandler7s } from "~contents/routes/7speaking/LearningHandler7s";
+import { LearningHandlerPmf } from "~contents/routes/prepmyfutur/LearningHandlerPmf";
+import { MultipleStepQuizAccessHandlerPmf } from "~contents/routes/prepmyfutur/MultipleStepQuizAccessHandlerPmf";
+import { QuizzAccessHandlerPmf } from "~contents/routes/prepmyfutur/QuizzAccessHandlerPmf";
+import { QuizzResultHandlerPmf } from "~contents/routes/prepmyfutur/QuizzResultHandlerPmf";
+import { QuizzHandler } from "~contents/routes/QuizzHandler";
+import type { RouteHandlerInterface } from "~contents/routes/RouteHandlerInterface";
+import { StorageKeys, storageService } from "~contents/services/StorageService";
+import { updateService } from "~contents/services/UpdateService";
+import { Constants } from "~contents/utils/Constants";
+import { logMessage } from "~contents/utils/Logging";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://user.7speaking.com/*", "https://prepmyfuture.com/*"],
@@ -25,7 +26,8 @@ const routesHandler: RouteHandlerInterface[] = [
   new LearningHandler7s(),
   new LearningHandlerPmf(),
   new QuizzAccessHandlerPmf(),
-  new QuizzResultHandlerPmf()
+  new QuizzResultHandlerPmf(),
+  new MultipleStepQuizAccessHandlerPmf()
 ]
 
 class Bot {
