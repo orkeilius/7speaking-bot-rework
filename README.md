@@ -4,6 +4,17 @@ A browser extension to automate learning on 7speaking.com and prepmyfuture.com
 
 inspired by [7speaking bot legacy](https://github.com/Dixel1/7speaking-bot-legacy)
 
+![GitHub Release](https://img.shields.io/github/v/release/orkeilius/7speaking-bot-rework)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/orkeilius/7speaking-bot-rework/total)
+![GitHub Repo stars](https://img.shields.io/github/stars/orkeilius/7speaking-bot-rework)
+
+[![wakatime](https://wakatime.com/badge/user/b3086389-10af-4dfc-a8ea-5893ce3fda92/project/87a3c834-38de-4c73-875c-a22dd7ef45cd.svg)](https://wakatime.com/badge/user/b3086389-10af-4dfc-a8ea-5893ce3fda92/project/87a3c834-38de-4c73-875c-a22dd7ef45cd)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=orkeilius_7speaking-bot-rework&metric=bugs)](https://sonarcloud.io/summary/new_code?id=orkeilius_7speaking-bot-rework)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=orkeilius_7speaking-bot-rework&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=orkeilius_7speaking-bot-rework)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=orkeilius_7speaking-bot-rework&metric=coverage)](https://sonarcloud.io/summary/new_code?id=orkeilius_7speaking-bot-rework)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=orkeilius_7speaking-bot-rework&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=orkeilius_7speaking-bot-rework)
+
+
 ## Features
 - work on 7speaking and PrepMyFutur
 - Automatically quiz completion (On lesson)
