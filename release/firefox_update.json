@@ -53,6 +53,10 @@
         {
           "version": "1.0.1",
           "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/1.0.1/7speaking-bot-rework_firefox-1.0.1.xpi"
+        },
+        {
+          "version": "1.1.0",
+          "update_link": "https://github.com/orkeilius/7speaking-bot-rework/releases/download/1.1.0/7speaking-bot-rework_firefox-1.1.0.xpi"
         }
       ]
     }
