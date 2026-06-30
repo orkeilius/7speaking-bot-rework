@@ -29,10 +29,30 @@ inspired by [7speaking bot legacy](https://github.com/Dixel1/7speaking-bot-legac
 3. Go to `chrome://extensions/` and enable developer mode
 4. Click on "Load unpacked" and select the unzipped folder
 
-## Getting Started
+## developement
+### Getting Started
 
 ```bash
 yarn install
 
 yarn run dev
 ```
+
+### github secret
+
+Those secret are needed to run the ci and publish a new extension
+
+#### ci / e2e
+| name | description |
+| --- | --- |
+| SONAR_TOKEN | token for sonar scan |
+| WEBSITE_TEST_USERNAME | 7speaking user login |
+| WEBSITE_TEST_PASSWORD | 7speaking user password |
+
+#### cd
+| name | description |
+| --- | --- |
+| CRX_KEY | pgp key to sign the extension on chrome(ium) |
+| FIREFOX_API_KEY | extension workshop api key |
+| FIREFOX_API_SECRET | extension workshop api secret | 
+| DEPLOY_KEY | key to push on main (for version bump) |
