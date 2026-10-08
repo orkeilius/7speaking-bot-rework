@@ -51,7 +51,7 @@ export class StorageKeys<T> {
     public static readonly TIMER_URL = new StorageKeys("timerUrl", "");
     public static readonly TIMER_END = new StorageKeys("timerEnd", 0);
     public static readonly CUSTOM_TIMER_QUIZ = new StorageKeys("customTimerQuiz", 1000 * 60 * 20);
-    public static readonly CUSTOM_TIMER_QUESTION = new StorageKeys("customTimerQuestion", 1000 * 45);
+    public static readonly CUSTOM_TIMER_QUESTION = new StorageKeys("customTimerQuestion", 1000 * 10);
     public static readonly USE_RECOMMENDED_TIME = new StorageKeys("useRealtime", true);
     public static readonly ERROR_PROBABILITY = new StorageKeys("errorProbability", Math.random() / 3 + 0.1);
     public static readonly SHOW_OVERLAY = new StorageKeys("showOverlay", true)
