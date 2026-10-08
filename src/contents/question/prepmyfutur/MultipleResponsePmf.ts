@@ -34,7 +34,8 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
         const target = this.getTargetedQuestion()
 
         if (target == null) {
-            throw new Error("Could not find active question target")
+            console.warn("Could not find active question target")
+            return -1
         }
 
         const questionId = target.id.replace("content_question_", "")
@@ -47,12 +48,15 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
             this.getTargetedQuestion().querySelectorAll(".radio").length
         const goodAnswer = await this.getGoodAnswer()
 
+        if (goodAnswer === -1) { return -1 }
+
         return [...new Array(nbAnwser - 1).keys()].filter((x) => x !== goodAnswer)[
             Math.floor(Math.random() * (nbAnwser - 2))
             ]
     }
 
     async executeAnswer(answer: number): Promise<void> {
+        if(answer == -1){return}
         const target = this.getTargetedQuestion()
         if (target == null) {
             throw new Error("Could not find active question target to execute answer")
@@ -75,7 +79,7 @@ export class MultipleResponsePmf extends QuestionInterface<number> {
         ).click()
     }
 
-    private getTargetedQuestion() {
+    protected getTargetedQuestion() {
         const target = document
             .querySelectorAll("[id^=content_question_]")
             .values()

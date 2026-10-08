@@ -64,9 +64,9 @@ describe('MultipleResponsePmf', () => {
             await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find exercise ID in URL');
         });
 
-        test('should throw error if active question target is not found', async () => {
+        test('should return -1 if active question target is not found', async () => {
             window.history.pushState({}, '', '?user_exercise_id=12345');
-            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find active question target');
+            await expect(handler.getGoodAnswer()).resolves.toBe(-1);
         });
 
         test('should fetch and return good answer index when target is found', async () => {
