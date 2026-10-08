@@ -75,12 +75,20 @@ describe('AdaptativeQuizPmf', () => {
     });
 
     describe('getGoodAnswer', () => {
+        test('should return -1 if no question is available', async () => {
+            await expect(handler.getGoodAnswer()).resolves.toBe(-1);
+        });
+
         test('should throw error if no solution container found', async () => {
+            document.body.innerHTML = `
+                <div id="content_question_123"></div>
+            `;
             await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find solution container for adaptive question');
         });
 
         test('should throw error if no correct answer found in solution container', async () => {
             document.body.innerHTML = `
+                <div id="content_question_123"></div>
                 <div id="container_solution_123">
                     <div class="question">
                         <div class="answer">Wrong A</div>
@@ -89,12 +97,15 @@ describe('AdaptativeQuizPmf', () => {
                 </div>
             `;
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-            await expect(handler.getGoodAnswer()).rejects.toThrow('Could not find correct answer in adaptive question solution');
+            await expect(handler.getGoodAnswer()).rejects.toThrow(
+                'Could not find correct answer in adaptive question solution'
+            );
             consoleSpy.mockRestore();
         });
 
         test('should return index of correct answer from solution container', async () => {
             document.body.innerHTML = `
+                <div id="content_question_123"></div>
                 <div id="container_solution_123">
                     <div class="question">
                         <div class="answer">Wrong A</div>
@@ -128,7 +139,10 @@ describe('AdaptativeQuizPmf', () => {
 
     describe('executeAnswer', () => {
         test('should throw error if target question is not found', async () => {
-            await expect(handler.executeAnswer(1)).rejects.toThrow('Could not find active question target to execute answer');
+            document.body.innerHTML = ``
+            await expect(handler.executeAnswer(1)).rejects.toThrow(
+                'Could not find active question target to execute answer'
+            );
         });
 
         test('should click the correct radio button inside target question', async () => {
