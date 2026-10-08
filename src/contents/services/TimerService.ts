@@ -5,7 +5,7 @@ class TimeUtils {
 
     // 20 minutes
     static readonly defaultTimerQuiz = 60 * 1000 * 20;
-    static readonly defaultTimerQuestion = 30 * 1000;
+    static readonly defaultTimerQuestion = 10 * 1000;
 
     async isWaitingEnded(timerType: TimerType) {
         if(document.location.href !== await storageService.get(StorageKeys.TIMER_URL)){
@@ -25,8 +25,15 @@ class TimeUtils {
     async createTimer(timerType:TimerType){
         let time = await storageService.get<number>(timerType == TimerType.QUIZ ? StorageKeys.CUSTOM_TIMER_QUIZ : StorageKeys.CUSTOM_TIMER_QUESTION)
 
-        if(timerType == TimerType.QUIZ && await storageService.get<boolean>(StorageKeys.USE_RECOMMENDED_TIME)){
-            time = await this.findRealTime()
+        if(await storageService.get<boolean>(StorageKeys.USE_RECOMMENDED_TIME)){
+            switch (timerType) {
+                case TimerType.QUIZ:
+                    time = await this.findRealTime()
+                    break
+                case TimerType.QUESTION:
+                    time = TimeUtils.defaultTimerQuestion
+                    break
+            }
         }
         const newTime = Date.now() + (time * (Math.random() + 0.5))
 
